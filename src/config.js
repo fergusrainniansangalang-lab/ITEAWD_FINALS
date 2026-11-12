@@ -35,8 +35,8 @@ export const DELIVERY_DAYS = 4;
 export const DATE_LOCALE = 'en-PH';
 
 /* ── LocalStorage keys ── */
-export const LS_CART_KEY = 'apexmart_cart';
-export const LS_USER_KEY = 'apexmart_user';
+export const LS_CART_KEY = 'raijoukaku_cart';
+export const LS_USER_KEY = 'raijoukaku_user';
 
 /* ── Sakura Pink Color Palette ── */
 export const COLOR_PRIMARY = '#F48FB1';       // Sakura pink

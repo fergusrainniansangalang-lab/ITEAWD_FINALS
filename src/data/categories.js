@@ -1,5 +1,5 @@
 /**
- * ApexMart - Categories Catalog
+ * RaiJouKaKu - Categories Catalog
  * Maps directly to the 7 required store categories in the project requirements:
  * 1. Electronics
  * 2. Shoes

@@ -146,7 +146,7 @@ export default function Footer() {
 
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 1 }}>
           <Typography variant="body2" color="text.secondary">
-            © {new Date().getFullYear()} {SITE_NAME} (ApexMart). All rights reserved.
+            © {new Date().getFullYear()} {SITE_NAME} ({SITE_NAME_JP}). All rights reserved.
           </Typography>
           <Typography variant="caption" color="text.secondary">
             Designed for ITEAWD Finals Examination • Authentic Japanese Experience 🌸
