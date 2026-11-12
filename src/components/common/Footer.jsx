@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import paths from 'routes/paths';
 import {
   SITE_NAME,
+  SITE_NAME_JP,
   SITE_NAME_EN,
   CONTACT_EMAIL,
   CONTACT_PHONE,
