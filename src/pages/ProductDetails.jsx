@@ -24,6 +24,7 @@ import paths from 'routes/paths';
 import {
   CURRENCY_SYMBOL,
   COLOR_PRIMARY_DARK,
+  LS_STOCK_KEY,
 } from '../config';
 
 export default function ProductDetails() {
@@ -31,7 +32,15 @@ export default function ProductDetails() {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
-  const product = useMemo(() => products.find((p) => p.id === id) || products[0], [id]);
+  const product = useMemo(() => {
+    const raw = products.find((p) => p.id === id) || products[0];
+    if (!raw) return raw;
+    try {
+      const stockMap = JSON.parse(localStorage.getItem(LS_STOCK_KEY) || '{}');
+      if (stockMap[raw.id] !== undefined) return { ...raw, inStock: stockMap[raw.id] };
+    } catch (_) {}
+    return raw;
+  }, [id]);
 
   const [mainImg, setMainImg] = useState(0);
   const [qty, setQty] = useState(1);

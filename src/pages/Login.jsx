@@ -22,10 +22,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from 'context/AuthContext';
 import paths from 'routes/paths';
-import { SITE_NAME, SITE_TAGLINE, COLOR_PRIMARY_DARK } from '../config';
+import { SITE_NAME, SITE_TAGLINE, COLOR_PRIMARY_DARK, ADMIN_PASSWORD } from '../config';
 import AdminDashboard from '../components/admin/AdminDashboard';
 
-const ADMIN_SECRET = 'JAPANISLIFE';
+const ADMIN_SECRET = ADMIN_PASSWORD;
 
 export default function Login() {
   const navigate = useNavigate();

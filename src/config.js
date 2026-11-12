@@ -34,9 +34,16 @@ export const DELIVERY_DAYS = 4;
 /* ── Locale for date formatting ── */
 export const DATE_LOCALE = 'en-PH';
 
+/* ── Admin credentials ── */
+export const ADMIN_PASSWORD = 'JAPANISLIFE';
+
 /* ── LocalStorage keys ── */
 export const LS_CART_KEY = 'raijoukaku_cart';
 export const LS_USER_KEY = 'raijoukaku_user';
+export const LS_ORDERS_KEY = 'raijoukaku_orders';
+export const LS_TICKETS_KEY = 'raijoukaku_tickets';
+export const LS_STOCK_KEY = 'raijoukaku_stock';
+export const LS_SETTINGS_KEY = 'raijoukaku_settings';
 
 /* ── Sakura Pink Color Palette ── */
 export const COLOR_PRIMARY = '#F48FB1';       // Sakura pink

@@ -32,6 +32,7 @@ import {
   CONTACT_ADDRESS,
   BUSINESS_HOURS,
   COLOR_PRIMARY_DARK,
+  LS_TICKETS_KEY,
 } from '../config';
 
 const PROBLEM_CATEGORIES = [
@@ -94,6 +95,20 @@ export default function AboutContact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const newTicket = {
+      id: `TKT-${Math.floor(1000 + Math.random() * 9000)}`,
+      customer: form.name || 'Anonymous Customer',
+      category: form.category || 'General Customer Assistance',
+      orderId: form.orderId || 'N/A',
+      priority: form.category.includes('Damaged') || form.category.includes('Delayed') ? 'High' : 'Medium',
+      date: 'Just now',
+      status: 'Pending Review',
+      message: form.message,
+    };
+    try {
+      const existing = JSON.parse(localStorage.getItem(LS_TICKETS_KEY) || '[]');
+      localStorage.setItem(LS_TICKETS_KEY, JSON.stringify([newTicket, ...existing]));
+    } catch (_) {}
     setSnack(true);
     setForm({
       name: '',

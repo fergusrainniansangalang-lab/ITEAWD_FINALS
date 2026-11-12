@@ -23,6 +23,8 @@ import {
   FLAT_SHIPPING_FEE,
   CURRENCY_SYMBOL,
   COLOR_PRIMARY_DARK,
+  LS_ORDERS_KEY,
+  ORDER_PREFIX,
 } from '../config';
 
 const STEPS = ['Shipping Address', 'Payment Method', 'Order Review'];
@@ -91,6 +93,20 @@ export default function Checkout() {
   };
 
   const handlePlaceOrder = () => {
+    const orderId = `${ORDER_PREFIX}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const newOrder = {
+      id: orderId,
+      customer: `${shipping.firstName} ${shipping.lastName}`.trim() || 'Guest Customer',
+      destination: `${shipping.city || 'Metro Manila'}, Philippines`,
+      items: cartItems.map((i) => i.name).slice(0, 2).join(', ') + (cartItems.length > 2 ? ` +${cartItems.length - 2} more` : ''),
+      total: total,
+      date: 'Just now',
+      status: 'Processing',
+    };
+    try {
+      const existing = JSON.parse(localStorage.getItem(LS_ORDERS_KEY) || '[]');
+      localStorage.setItem(LS_ORDERS_KEY, JSON.stringify([newOrder, ...existing]));
+    } catch (_) {}
     clearCart();
     navigate(paths.orderConfirmation);
   };

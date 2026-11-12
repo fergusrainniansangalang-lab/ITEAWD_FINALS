@@ -28,6 +28,7 @@ import paths from 'routes/paths';
 import {
   CURRENCY_SYMBOL,
   COLOR_PRIMARY_DARK,
+  LS_STOCK_KEY,
 } from '../config';
 
 const ALL_CATEGORIES = [
@@ -369,7 +370,13 @@ export default function ProductListing() {
 
   /* ── Filtering Logic ── */
   const filtered = useMemo(() => {
-    let list = [...products];
+    let list = products.map((p) => {
+      try {
+        const stockMap = JSON.parse(localStorage.getItem(LS_STOCK_KEY) || '{}');
+        if (stockMap[p.id] !== undefined) return { ...p, inStock: stockMap[p.id] };
+      } catch (_) {}
+      return p;
+    });
 
     // Filter by category
     if (selectedCategories.length > 0) {
