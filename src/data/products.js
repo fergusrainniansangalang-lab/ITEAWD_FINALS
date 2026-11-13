@@ -1,4 +1,4 @@
-/**
+﻿/**
  * products.js
  * ============================================================
  * Comprehensive Japanese-Themed Product Catalog
@@ -15,9 +15,9 @@
  */
 
 export const products = [
-  // ─────────────────────────────────────────────────────────────
-  // 1. CLOTHING (衣類) - 5 Japanese Apparel Products
-  // ─────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // 1. CLOTHING (è¡£é¡ž) - 5 Japanese Apparel Products
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     id: 'prod-cloth-1',
     name: 'Flannel Shirt',
@@ -27,8 +27,8 @@ export const products = [
     originalPrice: 2200.00,
     rating: 4.9,
     reviewsCount: 342,
-    image: '/images/products/clothing/Flannel Shirt.avif',
-    images: ['/images/products/clothing/Flannel Shirt.avif'],
+    image: '/images/products/clothing/Flannel-Shirt.avif',
+    images: ['/images/products/clothing/Flannel-Shirt.avif'],
     description: 'Classic Japanese brushed cotton flannel shirt designed for comfortable layering with timeless button-down styling.',
     features: ['100% Ultra-soft Brushed Cotton', 'Button-Down Collar & Front Placket', 'Relaxed Daily Wear Fit', 'Japanese Tailored Stitching'],
     inStock: true,
@@ -45,8 +45,8 @@ export const products = [
     originalPrice: 2900.00,
     rating: 4.8,
     reviewsCount: 189,
-    image: '/images/products/clothing/Heavy Weight Sweat Cocoon.avif',
-    images: ['/images/products/clothing/Heavy Weight Sweat Cocoon.avif'],
+    image: '/images/products/clothing/Heavy-Weight-Sweat-Cocoon.avif',
+    images: ['/images/products/clothing/Heavy-Weight-Sweat-Cocoon.avif'],
     description: 'Heavyweight loopback cotton pullover hoodie with a cocoon silhouette for relaxed Japanese street fashion.',
     features: ['Heavyweight 380 GSM Cotton', 'Cocoon Oversized Silhouette', 'Kangaroo Pockets', 'Double-layered Warm Hood'],
     inStock: true,
@@ -63,8 +63,8 @@ export const products = [
     originalPrice: 850.00,
     rating: 4.9,
     reviewsCount: 297,
-    image: '/images/products/clothing/Ribbed Beanie.avif',
-    images: ['/images/products/clothing/Ribbed Beanie.avif'],
+    image: '/images/products/clothing/Ribbed-Beanie.avif',
+    images: ['/images/products/clothing/Ribbed-Beanie.avif'],
     description: 'Cozy fine-knit ribbed beanie made from thermal spun yarn. Designed to keep warmth while pairing with any winter wardrobe.',
     features: ['Fine Ribbed Knit Construction', 'Thermal Insulation Yarn', 'Folded Cuff Detail', 'Unisex One-Size-Fits-All'],
     inStock: true,
@@ -81,8 +81,8 @@ export const products = [
     originalPrice: 3200.00,
     rating: 4.8,
     reviewsCount: 421,
-    image: '/images/products/clothing/Straight Jeans.avif',
-    images: ['/images/products/clothing/Straight Jeans.avif'],
+    image: '/images/products/clothing/Straight-Jeans.avif',
+    images: ['/images/products/clothing/Straight-Jeans.avif'],
     description: 'Timeless Japanese straight-leg denim jeans with clean rinse wash, durable copper rivets, and five-pocket utility styling.',
     features: ['100% Premium Cotton Denim', 'Classic Straight Leg Fit', 'Reinforced Rivet Details', 'Authentic Japanese Indigo Wash'],
     inStock: true,
@@ -99,8 +99,8 @@ export const products = [
     originalPrice: 2750.00,
     rating: 4.9,
     reviewsCount: 156,
-    image: '/images/products/clothing/Sweat Look Knit Oversized Pullover.avif',
-    images: ['/images/products/clothing/Sweat Look Knit Oversized Pullover.avif'],
+    image: '/images/products/clothing/Sweat-Look-Knit-Oversized-Pullover.avif',
+    images: ['/images/products/clothing/Sweat-Look-Knit-Oversized-Pullover.avif'],
     description: 'Blends the comfort of a sweatshirt with the texture of a luxury knit pullover. Ideal for casual, cozy elegance.',
     features: ['Sweatshirt-Inspired Knit Texture', 'Oversized Boxy Silhouette', 'Ribbed Hem and Cuffs', 'Ultra-soft Non-itch Blend'],
     inStock: true,
@@ -109,9 +109,9 @@ export const products = [
     badge: 'New Arrival'
   },
 
-  // ─────────────────────────────────────────────────────────────
-  // 2. GROCERY / FOODS (食品) - 5 Japanese Culinary Products
-  // ─────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // 2. GROCERY / FOODS (é£Ÿå“) - 5 Japanese Culinary Products
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     id: 'prod-groc-1',
     name: 'Certified Organic Green Yuzu Kosho Paste',
@@ -121,8 +121,8 @@ export const products = [
     originalPrice: 820.00,
     rating: 4.9,
     reviewsCount: 652,
-    image: '/images/products/grocery/Certified Organic Green Yuzu Kosho Paste.webp',
-    images: ['/images/products/grocery/Certified Organic Green Yuzu Kosho Paste.webp'],
+    image: '/images/products/grocery/Certified-Organic-Green-Yuzu-Kosho-Paste.webp',
+    images: ['/images/products/grocery/Certified-Organic-Green-Yuzu-Kosho-Paste.webp'],
     description: 'Authentic Japanese citrus chili seasoning made from stone-crushed green yuzu citrus peel and fiery green chili peppers with natural sea salt.',
     features: ['100% Certified Organic Japanese Green Yuzu', 'Stone-Crushed Spicy Pepper Blend', 'Natural Mineral Sea Salt', 'Versatile Condiment for Meat, Fish & Soup'],
     inStock: true,
@@ -139,8 +139,8 @@ export const products = [
     originalPrice: 1400.00,
     rating: 5.0,
     reviewsCount: 284,
-    image: '/images/products/grocery/J Taste Dried Hijiki Seaweed Premium.webp',
-    images: ['/images/products/grocery/J Taste Dried Hijiki Seaweed Premium.webp'],
+    image: '/images/products/grocery/J-Taste-Dried-Hijiki-Seaweed-Premium.webp',
+    images: ['/images/products/grocery/J-Taste-Dried-Hijiki-Seaweed-Premium.webp'],
     description: 'Premium quality sun-dried Japanese wild Hijiki seaweed packed with dietary fiber, iron, calcium, and deep ocean minerals.',
     features: ['Wild Harvested Japanese Hijiki Seaweed', 'Rich in Essential Minerals & Iron', 'Natural Sun-Dried Preservation', 'Easy 20-Minute Rehydration for Salads'],
     inStock: true,
@@ -157,8 +157,8 @@ export const products = [
     originalPrice: 1050.00,
     rating: 4.8,
     reviewsCount: 512,
-    image: '/images/products/grocery/Ichiran Hakata Tonkotsu Ramen.jpg',
-    images: ['/images/products/grocery/Ichiran Hakata Tonkotsu Ramen.jpg'],
+    image: '/images/products/grocery/Ichiran-Hakata-Tonkotsu-Ramen.jpg',
+    images: ['/images/products/grocery/Ichiran-Hakata-Tonkotsu-Ramen.jpg'],
     description: 'Experience the world-renowned Fukuoka Hakata tonkotsu broth at home. Includes firm straight noodles and Ichiran proprietary red seasoning powder.',
     features: ['5 Full Servings per Box', 'Authentic Fukuoka Tonkotsu Base', 'Original Secret Red Pepper Seasoning', 'Ready in 3 Minutes'],
     inStock: true,
@@ -175,8 +175,8 @@ export const products = [
     originalPrice: 1500.00,
     rating: 4.9,
     reviewsCount: 378,
-    image: '/images/products/grocery/Tokyo Banana and Pocky Crate.jpg',
-    images: ['/images/products/grocery/Tokyo Banana and Pocky Crate.jpg'],
+    image: '/images/products/grocery/Tokyo-Banana-and-Pocky-Crate.jpg',
+    images: ['/images/products/grocery/Tokyo-Banana-and-Pocky-Crate.jpg'],
     description: 'Curated gift box with 15 limited edition Japanese treats: Tokyo Banana sponge cakes, Sakura Matcha KitKats, Strawberry Pocky, and salty Senbei crackers.',
     features: ['15 Assorted Authentic Japanese Snacks', 'Limited Seasonal Sakura Editions', 'Direct Import from Tokyo Confectioneries', 'Custom Decorative Gift Box'],
     inStock: true,
@@ -193,8 +193,8 @@ export const products = [
     originalPrice: 890.00,
     rating: 4.7,
     reviewsCount: 165,
-    image: '/images/products/grocery/Kagoshima Wagyu Dashi Furikake.jpg',
-    images: ['/images/products/grocery/Kagoshima Wagyu Dashi Furikake.jpg'],
+    image: '/images/products/grocery/Kagoshima-Wagyu-Dashi-Furikake.jpg',
+    images: ['/images/products/grocery/Kagoshima-Wagyu-Dashi-Furikake.jpg'],
     description: 'Gourmet crispy rice topping infused with real freeze-dried Kagoshima A5 Wagyu beef bits, toasted sesame, and kombu seaweed umami crunch.',
     features: ['Real A5 Japanese Wagyu Beef Flakes', 'Kombu Kelp & Bonito Umami Profile', 'No Artificial Preservatives', 'Elevates Rice, Noodles & Salads'],
     inStock: true,
@@ -203,9 +203,9 @@ export const products = [
     badge: 'Gourmet'
   },
 
-  // ─────────────────────────────────────────────────────────────
-  // 3. ELECTRONICS (電子機器) - 5 Japanese Tech Innovations
-  // ─────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // 3. ELECTRONICS (é›»å­æ©Ÿå™¨) - 5 Japanese Tech Innovations
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     id: 'prod-elec-1',
     name: 'Sony WH-1000XM5 Hi-Res Noise-Cancelling Headphones',
@@ -215,8 +215,8 @@ export const products = [
     originalPrice: 20990.00,
     rating: 4.9,
     reviewsCount: 890,
-    image: '/images/products/electronics/Sony WH-1000XM5 Headphones.jpg',
-    images: ['/images/products/electronics/Sony WH-1000XM5 Headphones.jpg'],
+    image: '/images/products/electronics/Sony-WH-1000XM5-Headphones.jpg',
+    images: ['/images/products/electronics/Sony-WH-1000XM5-Headphones.jpg'],
     description: 'Engineered in Tokyo with dual processors and 8 microphones for industry-leading noise cancellation, LDAC Hi-Res Wireless, and 30-hour battery life.',
     features: ['Integrated Processor V1 + QN1', 'Auto NC Optimizer & 8 Microphones', 'Ultra-comfortable Lightweight Design', 'Speak-to-Chat & Multipoint Connection'],
     inStock: true,
@@ -233,8 +233,8 @@ export const products = [
     originalPrice: 17990.00,
     rating: 5.0,
     reviewsCount: 1120,
-    image: '/images/products/electronics/Nintendo Switch OLED Model.jpg',
-    images: ['/images/products/electronics/Nintendo Switch OLED Model.jpg'],
+    image: '/images/products/electronics/Nintendo-Switch-OLED-Model.jpg',
+    images: ['/images/products/electronics/Nintendo-Switch-OLED-Model.jpg'],
     description: 'Kyoto-crafted handheld gaming console with a vibrant 7-inch OLED screen, wide adjustable stand, enhanced audio, and 64GB internal storage.',
     features: ['7-inch Vibrant OLED Screen', 'Wide Adjustable Stand for Tabletop Mode', 'Wired LAN Port in Dock', 'Enhanced Onboard Audio'],
     inStock: true,
@@ -251,8 +251,8 @@ export const products = [
     originalPrice: 13500.00,
     rating: 4.9,
     reviewsCount: 420,
-    image: '/images/products/electronics/Zojirushi Smart Rice Cooker.jpg',
-    images: ['/images/products/electronics/Zojirushi Smart Rice Cooker.jpg'],
+    image: '/images/products/electronics/Zojirushi-Smart-Rice-Cooker.jpg',
+    images: ['/images/products/electronics/Zojirushi-Smart-Rice-Cooker.jpg'],
     description: 'Made in Japan. Features advanced Neuro Fuzzy logic technology that micro-adjusts temperature and heating time for flawless Japanese rice every batch.',
     features: ['Made in Japan with Neuro Fuzzy Tech', 'Multiple Settings: White, Sushi, Porridge', 'Spherical Inner Cooking Pan & Heating', 'Keep Warm & Reheat Functions'],
     inStock: true,
@@ -269,8 +269,8 @@ export const products = [
     originalPrice: 19500.00,
     rating: 4.8,
     reviewsCount: 231,
-    image: '/images/products/electronics/Audio-Technica Direct-Drive Turntable.jpg',
-    images: ['/images/products/electronics/Audio-Technica Direct-Drive Turntable.jpg'],
+    image: '/images/products/electronics/Audio-Technica-Direct-Drive-Turntable.jpg',
+    images: ['/images/products/electronics/Audio-Technica-Direct-Drive-Turntable.jpg'],
     description: 'Tokyo precision audio engineering. Direct-drive DC servo motor with selectable phono pre-amplifier and USB output to digitize vinyl records.',
     features: ['Direct-drive High-torque DC Motor', 'AT-VM95E Dual Magnet Cartridge', 'Built-in Switchable Phono Pre-amp', 'USB Output for Direct PC Recording'],
     inStock: true,
@@ -287,8 +287,8 @@ export const products = [
     originalPrice: 7200.00,
     rating: 4.8,
     reviewsCount: 310,
-    image: '/images/products/electronics/Panasonic Nanoe Moisture Hair Dryer.jpg',
-    images: ['/images/products/electronics/Panasonic Nanoe Moisture Hair Dryer.jpg'],
+    image: '/images/products/electronics/Panasonic-Nanoe-Moisture-Hair-Dryer.jpg',
+    images: ['/images/products/electronics/Panasonic-Nanoe-Moisture-Hair-Dryer.jpg'],
     description: 'Patented Japanese Nanoe moisture technology pulls water molecules from the air, infusing 1,000x more moisture into hair while drying.',
     features: ['Nanoe Moisture Particle Generator', 'Quick-dry Nozzle for Fast Uniform Airflow', '3 Speed & 3 Temperature Modes', 'Cold-shot Button to Lock Hairstyle'],
     inStock: true,
@@ -297,9 +297,9 @@ export const products = [
     badge: 'Beauty Tech'
   },
 
-  // ─────────────────────────────────────────────────────────────
-  // 4. SHOES (履物) - 5 Japanese Footwear Products
-  // ─────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // 4. SHOES (å±¥ç‰©) - 5 Japanese Footwear Products
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     id: 'prod-shoe-1',
     name: 'Color Canvas Sneakers',
@@ -309,8 +309,8 @@ export const products = [
     originalPrice: 2490.00,
     rating: 4.9,
     reviewsCount: 468,
-    image: '/images/products/shoes/Color Canvas Sneakers.avif',
-    images: ['/images/products/shoes/Color Canvas Sneakers.avif'],
+    image: '/images/products/shoes/Color-Canvas-Sneakers.avif',
+    images: ['/images/products/shoes/Color-Canvas-Sneakers.avif'],
     description: 'Vibrant Japanese street-style low-cut canvas sneakers featuring cushioned insole and vulcanized rubber sole.',
     features: ['100% Heavy Cotton Canvas Upper', 'Durable Vulcanized Rubber Sole', 'Cushioned Memory Foam Footbed', 'Japanese Minimalist Design'],
     inStock: true,
@@ -327,8 +327,8 @@ export const products = [
     originalPrice: 3990.00,
     rating: 4.9,
     reviewsCount: 520,
-    image: '/images/products/shoes/Faux Mouton Short Boots.avif',
-    images: ['/images/products/shoes/Faux Mouton Short Boots.avif'],
+    image: '/images/products/shoes/Faux-Mouton-Short-Boots.avif',
+    images: ['/images/products/shoes/Faux-Mouton-Short-Boots.avif'],
     description: 'Ultra-warm short winter ankle boots lined with plush faux mouton fleece for lightweight cold-weather comfort.',
     features: ['Soft Faux Mouton Fleece Lining', 'Water-Resistant Suede Texture Upper', 'Anti-Slip Tread Outsole', 'Slip-On Ankle Height Silhouette'],
     inStock: true,
@@ -345,8 +345,8 @@ export const products = [
     originalPrice: 3400.00,
     rating: 4.8,
     reviewsCount: 198,
-    image: '/images/products/shoes/Nylon Combination Flat Sole Sneakers.avif',
-    images: ['/images/products/shoes/Nylon Combination Flat Sole Sneakers.avif'],
+    image: '/images/products/shoes/Nylon-Combination-Flat-Sole-Sneakers.avif',
+    images: ['/images/products/shoes/Nylon-Combination-Flat-Sole-Sneakers.avif'],
     description: 'Low-profile athletic sneakers crafted with hybrid technical nylon and supple overlays for effortless city walking.',
     features: ['Technical Nylon & Synthetic Leather Combo', 'Flat Low-Profile Rubber Grip Sole', 'Breathable Mesh Tongue & Insole', 'Casual Urban Commuter Styling'],
     inStock: true,
@@ -363,8 +363,8 @@ export const products = [
     originalPrice: 2850.00,
     rating: 4.7,
     reviewsCount: 185,
-    image: '/images/products/shoes/High Top Sneakers.avif',
-    images: ['/images/products/shoes/High Top Sneakers.avif'],
+    image: '/images/products/shoes/High-Top-Sneakers.avif',
+    images: ['/images/products/shoes/High-Top-Sneakers.avif'],
     description: 'Vintage-inspired Japanese high-top canvas sneakers with reinforced toe cap and contrast stitching.',
     features: ['Durable 16oz Cotton Canvas', 'Reinforced Rubber Toe Guard', 'High Ankle Support Cushioning', 'Signature Japanese Craftsmanship'],
     inStock: true,
@@ -381,8 +381,8 @@ export const products = [
     originalPrice: 4200.00,
     rating: 4.8,
     reviewsCount: 142,
-    image: '/images/products/shoes/Coin Loafers.avif',
-    images: ['/images/products/shoes/Coin Loafers.avif'],
+    image: '/images/products/shoes/Coin-Loafers.avif',
+    images: ['/images/products/shoes/Coin-Loafers.avif'],
     description: 'Classic Japanese penny loafers crafted from smooth polished leather with saddle strap slot and dress sole.',
     features: ['Polished Smooth Vegan Leather', 'Traditional Penny Saddle Strap Slot', 'Comfort Padded Footbed', 'Versatile Formal to Casual Style'],
     inStock: true,
@@ -391,9 +391,9 @@ export const products = [
     badge: 'Artisan Crafted'
   },
 
-  // ─────────────────────────────────────────────────────────────
-  // 5. CLEANING SUPPLIES / HOME GOODS (生活・清掃) - 5 Products
-  // ─────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // 5. CLEANING SUPPLIES / HOME GOODS (ç”Ÿæ´»ãƒ»æ¸…æŽƒ) - 5 Products
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     id: 'prod-clean-1',
     name: 'Chaise Longue',
@@ -403,8 +403,8 @@ export const products = [
     originalPrice: 5990.00,
     rating: 4.9,
     reviewsCount: 780,
-    image: '/images/products/cleaning/Chaise longue.avif',
-    images: ['/images/products/cleaning/Chaise longue.avif'],
+    image: '/images/products/cleaning/Chaise-longue.avif',
+    images: ['/images/products/cleaning/Chaise-longue.avif'],
     description: 'Modern Japanese minimalist reclining chaise longue designed for ergonomic relaxation and streamlined living spaces.',
     features: ['Ergonomic Contoured Lounge Structure', 'Breathable Textured Upholstery Fabric', 'Minimalist Sturdy Steel Frame', 'Easy Maintenance Removable Cover'],
     inStock: true,
@@ -421,8 +421,8 @@ export const products = [
     originalPrice: 2200.00,
     rating: 4.8,
     reviewsCount: 215,
-    image: '/images/products/cleaning/Glostad Foot Stool.avif',
-    images: ['/images/products/cleaning/Glostad Foot Stool.avif'],
+    image: '/images/products/cleaning/Glostad-Foot-Stool.avif',
+    images: ['/images/products/cleaning/Glostad-Foot-Stool.avif'],
     description: 'Compact upholstered footstool and ottoman offering flexible seating, clean lines, and soft cushioned support.',
     features: ['High-Resilience Foam Cushion', 'Durable Compact Form Factor', 'Sturdy Solid Support Legs', 'Multipurpose Seating or Footrest'],
     inStock: true,
@@ -439,8 +439,8 @@ export const products = [
     originalPrice: 1500.00,
     rating: 4.9,
     reviewsCount: 164,
-    image: '/images/products/cleaning/Laundry bag with castors.avif',
-    images: ['/images/products/cleaning/Laundry bag with castors.avif'],
+    image: '/images/products/cleaning/Laundry-bag-with-castors.avif',
+    images: ['/images/products/cleaning/Laundry-bag-with-castors.avif'],
     description: 'Heavy-duty mobile laundry hamper cart equipped with smooth-gliding castors and moisture-resistant liner.',
     features: ['360-Degree Smooth Swivel Wheels', 'Heavy-Duty Moisture Resistant Fabric', 'Sturdy Coated Metal Frame', 'Removable Washable Hamper Bag'],
     inStock: true,
@@ -457,8 +457,8 @@ export const products = [
     originalPrice: 1790.00,
     rating: 4.7,
     reviewsCount: 390,
-    image: '/images/products/cleaning/LED table_wall lamp.avif',
-    images: ['/images/products/cleaning/LED table_wall lamp.avif'],
+    image: '/images/products/cleaning/LED-table_wall-lamp.avif',
+    images: ['/images/products/cleaning/LED-table_wall-lamp.avif'],
     description: 'Dual-purpose Japanese LED lamp that mounts seamlessly to walls or rests gracefully on desks and bedside tables.',
     features: ['Dual-Use Wall Mount or Table Stand', 'Soft Warm White Eye-Care LED', 'Touch-Sensitive Dimming Control', 'Energy Efficient Minimalist Aesthetic'],
     inStock: true,
@@ -475,8 +475,8 @@ export const products = [
     originalPrice: 2900.00,
     rating: 4.9,
     reviewsCount: 110,
-    image: '/images/products/cleaning/Shelving unit.avif',
-    images: ['/images/products/cleaning/Shelving unit.avif'],
+    image: '/images/products/cleaning/Shelving-unit.avif',
+    images: ['/images/products/cleaning/Shelving-unit.avif'],
     description: 'Multi-tier open shelving organizer designed for living rooms, kitchens, and home storage utility.',
     features: ['Multi-Tier Open Grid Shelving', 'High Load-Bearing Capacity', 'Rust-Resistant Powder Coating', 'Modular Space-Saving Geometry'],
     inStock: true,
@@ -485,9 +485,9 @@ export const products = [
     badge: 'Organizer'
   },
 
-  // ─────────────────────────────────────────────────────────────
-  // 6. SPORTS EQUIPMENT (スポーツ用品) - 5 Japanese Sports Gear
-  // ─────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // 6. SPORTS EQUIPMENT (ã‚¹ãƒãƒ¼ãƒ„ç”¨å“) - 5 Japanese Sports Gear
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     id: 'prod-sport-1',
     name: 'Molten BG5000 FIBA Official Japanese Match Basketball',
@@ -497,8 +497,8 @@ export const products = [
     originalPrice: 6200.00,
     rating: 5.0,
     reviewsCount: 390,
-    image: '/images/products/sports/Molten BG5000 Basketball.jpg',
-    images: ['/images/products/sports/Molten BG5000 Basketball.jpg'],
+    image: '/images/products/sports/Molten-BG5000-Basketball.jpg',
+    images: ['/images/products/sports/Molten-BG5000-Basketball.jpg'],
     description: 'Hiroshima engineered top-grain natural leather game ball. Features signature 12-panel design with enhanced sweat-absorbing pebble texture.',
     features: ['FIBA Approved Game Ball', 'Genuine Premium Japanese Leather', 'Dual-Cushion Foam Backing', 'Optimal Tactile Moisture Control'],
     inStock: true,
@@ -515,8 +515,8 @@ export const products = [
     originalPrice: 2900.00,
     rating: 4.9,
     reviewsCount: 145,
-    image: '/images/products/sports/Kendo Shinai Bamboo Sword.jpg',
-    images: ['/images/products/sports/Kendo Shinai Bamboo Sword.jpg'],
+    image: '/images/products/sports/Kendo-Shinai-Bamboo-Sword.jpg',
+    images: ['/images/products/sports/Kendo-Shinai-Bamboo-Sword.jpg'],
     description: 'Selected Kyoto Madake 4-stave bamboo with deluxe cowhide leather fittings and Tsuba hand guard. Balanced for tournament and dojo training.',
     features: ['4-Stave Seasoned Madake Bamboo', 'Tournament Standard Size 39 (Men/Women)', 'Hand-stitched White Cowhide Fittings', 'Includes Tsuba & Rubber Dome Ring'],
     inStock: true,
@@ -533,8 +533,8 @@ export const products = [
     originalPrice: 9600.00,
     rating: 4.9,
     reviewsCount: 278,
-    image: '/images/products/sports/Table Tennis Racket.jpg',
-    images: ['/images/products/sports/Table Tennis Racket.jpg'],
+    image: '/images/products/sports/Table-Tennis-Racket.jpg',
+    images: ['/images/products/sports/Table-Tennis-Racket.jpg'],
     description: 'Manufactured in Saitama, Japan. The world championship standard blade combining carbon speed with ALC softness for explosive spin and touch.',
     features: ['5-Ply Wood + 2-Ply Arylate Carbon', 'Dignics 05 Professional Rubber', 'FL Concave Ergonomic Handle', 'Official ITTF Match Stamp'],
     inStock: true,
@@ -551,8 +551,8 @@ export const products = [
     originalPrice: 5800.00,
     rating: 4.8,
     reviewsCount: 182,
-    image: '/images/products/sports/Badminton Racket Set.jpg',
-    images: ['/images/products/sports/Badminton Racket Set.jpg'],
+    image: '/images/products/sports/Badminton-Racket-Set.jpg',
+    images: ['/images/products/sports/Badminton-Racket-Set.jpg'],
     description: 'High-modulus carbon frame with Torayca M40J Japanese graphite. Delivers pinpoint smash accuracy and agile defense responses.',
     features: ['Torayca M40J Japanese Carbon Fiber', 'Even Balance 4U Weight (83g)', 'Aero Groove Frame Drag Reduction', 'Includes Thermal Carry Bag & Shuttles'],
     inStock: true,
@@ -569,8 +569,8 @@ export const products = [
     originalPrice: 4500.00,
     rating: 4.9,
     reviewsCount: 94,
-    image: '/images/products/sports/Japanese Cast Iron Kettlebell.jpg',
-    images: ['/images/products/sports/Japanese Cast Iron Kettlebell.jpg'],
+    image: '/images/products/sports/Japanese-Cast-Iron-Kettlebell.jpg',
+    images: ['/images/products/sports/Japanese-Cast-Iron-Kettlebell.jpg'],
     description: 'Cast in Iwate Prefecture using 900-year-old Nambu iron methods. Ergonomic wide handle with unglazed matte grip for kettlebell swings and snatches.',
     features: ['Traditional Iwate Cast Iron Pour', 'Machined Flat Base for Stability', 'Smooth Non-abrasive Handle Grip', 'Rust-resistant Natural Urushi Coating'],
     inStock: true,
@@ -579,9 +579,9 @@ export const products = [
     badge: 'Heavy Duty'
   },
 
-  // ─────────────────────────────────────────────────────────────
-  // 7. BOOKS (書籍) - 5 Japanese Culture & Literature Books
-  // ─────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // 7. BOOKS (æ›¸ç±) - 5 Japanese Culture & Literature Books
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     id: 'prod-book-1',
     name: 'The Art of Washoku: Master Secrets of Japanese Home Cooking',
@@ -591,8 +591,8 @@ export const products = [
     originalPrice: 1550.00,
     rating: 4.9,
     reviewsCount: 310,
-    image: '/images/products/books/The Art of Washoku.jpg',
-    images: ['/images/products/books/The Art of Washoku.jpg'],
+    image: '/images/products/books/The-Art-of-Washoku.jpg',
+    images: ['/images/products/books/The-Art-of-Washoku.jpg'],
     description: 'Hardcover culinary guide to seasonal Japanese cooking, Dashi preparation, sashimi slicing knives, and UNESCO Intangible Cultural Heritage recipes.',
     features: ['Hardcover 320 Full-Color Pages', '120 Step-by-Step Authentic Recipes', 'Guide to Seasonal Ingredients & Umami', 'Foreword by Michelin 3-Star Master Chef'],
     inStock: true,
@@ -609,8 +609,8 @@ export const products = [
     originalPrice: 2200.00,
     rating: 5.0,
     reviewsCount: 940,
-    image: '/images/products/books/Genki Elementary Japanese.jpg',
-    images: ['/images/products/books/Genki Elementary Japanese.jpg'],
+    image: '/images/products/books/Genki-Elementary-Japanese.jpg',
+    images: ['/images/products/books/Genki-Elementary-Japanese.jpg'],
     description: 'The premier worldwide standard for learning Japanese. Complete textbook and workbook covering Hiragana, Katakana, Kanji, grammar, and audio dialogues.',
     features: ['Complete 3rd Edition with Digital Audio App', '23 Comprehensive Cultural Dialogue Units', '317 Essential Kanji with Stroke Orders', 'Includes Full Exercise Answer Key'],
     inStock: true,
@@ -627,8 +627,8 @@ export const products = [
     originalPrice: 3100.00,
     rating: 4.9,
     reviewsCount: 167,
-    image: '/images/products/books/Masterpieces of Japanese Ukiyo-e.jpg',
-    images: ['/images/products/books/Masterpieces of Japanese Ukiyo-e.jpg'],
+    image: '/images/products/books/Masterpieces-of-Japanese-Ukiyo-e.jpg',
+    images: ['/images/products/books/Masterpieces-of-Japanese-Ukiyo-e.jpg'],
     description: 'Deluxe slipcased art folio compiling 200 rare woodblock prints by Hokusai, Hiroshige, and Utamaro with historical essays and color commentary.',
     features: ['Large Format Coffee Table Hardcover', 'Gold Foil Stamped Cloth Slipcase', 'High-definition 1200 DPI Restorations', 'Biographies of Edo-Period Print Masters'],
     inStock: true,
@@ -645,8 +645,8 @@ export const products = [
     originalPrice: 900.00,
     rating: 4.8,
     reviewsCount: 228,
-    image: '/images/products/books/The Book of Tea.jpg',
-    images: ['/images/products/books/The Book of Tea.jpg'],
+    image: '/images/products/books/The-Book-of-Tea.jpg',
+    images: ['/images/products/books/The-Book-of-Tea.jpg'],
     description: 'Timeless masterpiece exploring the aesthetic principles of Zen, Taoism, and the Japanese tea ceremony (Chado) as an art of everyday living.',
     features: ['Handcrafted Washi Paper Style Dustjacket', 'Unabridged Classic English & Japanese Text', 'Illustrations of Historical Tea Rooms', 'Compact Pocket Meditative Format'],
     inStock: true,
@@ -663,8 +663,8 @@ export const products = [
     originalPrice: 1850.00,
     rating: 4.9,
     reviewsCount: 185,
-    image: '/images/products/books/Tokyo Alleyways Hidden Yokocho.jpg',
-    images: ['/images/products/books/Tokyo Alleyways Hidden Yokocho.jpg'],
+    image: '/images/products/books/Tokyo-Alleyways-Hidden-Yokocho.jpg',
+    images: ['/images/products/books/Tokyo-Alleyways-Hidden-Yokocho.jpg'],
     description: 'Photographic voyage into the labyrinthine drinking alleys and Izakaya micro-bars of Shinjuku Golden Gai, Omoide Yokocho, and Yanaka.',
     features: ['240 High-Gloss Archival Color Plates', 'Bilingual English/Japanese Maps', 'Architecture Elevation Diagrams', 'Interviews with Master Bar Keepers'],
     inStock: true,

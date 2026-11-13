@@ -78,22 +78,22 @@ export const COLOR_WHITE = '#ffffff';
 /* ── Hero carousel slides (Japanese themed featuring new uploaded collections) ── */
 export const HERO_SLIDES = [
   {
-    img: '/images/products/clothing/Heavy Weight Sweat Cocoon.avif',
+    img: '/images/products/clothing/Heavy-Weight-Sweat-Cocoon.avif',
     title: 'Urban Japanese Streetwear & Apparel',
     sub: 'Heavyweight hoodies, flannel shirts, beanies & authentic straight denim',
   },
   {
-    img: '/images/products/shoes/Color Canvas Sneakers.avif',
+    img: '/images/products/shoes/Color-Canvas-Sneakers.avif',
     title: 'Casual & Heritage Japanese Footwear',
     sub: 'Canvas sneakers, faux mouton short boots & classic coin loafers',
   },
   {
-    img: '/images/products/cleaning/Chaise longue.avif',
+    img: '/images/products/cleaning/Chaise-longue.avif',
     title: 'Minimalist Japanese Home & Living',
     sub: 'Comfortable chaise longues, footstools, mobile carts & modern ambient lamps',
   },
   {
-    img: '/images/products/grocery/Certified Organic Green Yuzu Kosho Paste.webp',
+    img: '/images/products/grocery/Certified-Organic-Green-Yuzu-Kosho-Paste.webp',
     title: 'Authentic Japanese Pantry & Gourmet Delights',
     sub: 'Organic green yuzu kosho paste, dried hijiki seaweed & artisan delicacies',
   },
