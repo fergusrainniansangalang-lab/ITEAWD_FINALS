@@ -46,6 +46,7 @@ import {
   COLOR_PRIMARY_DARK,
   COLOR_PRIMARY_LIGHT,
   LS_STOCK_KEY,
+  getProductStock,
 } from '../config';
 
 /* ── Category definitions matching screenshot icons & labels ── */
@@ -61,19 +62,16 @@ const CATEGORIES = [
 
 export default function Home() {
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { addToCart, getItemInCartCount, getRemainingPurchasable } = useCart();
   const [slide, setSlide] = useState(0);
 
-  // Take designated featured products that are active in stock
+  // Take designated featured products that have active stock in admin
   const featured = products
     .map((p) => {
-      try {
-        const stockMap = JSON.parse(localStorage.getItem(LS_STOCK_KEY) || '{}');
-        if (stockMap[p.id] !== undefined) return { ...p, inStock: stockMap[p.id] };
-      } catch (_) {}
-      return p;
+      const quantity = getProductStock(p.id);
+      return { ...p, quantity, inStock: quantity > 0 };
     })
-    .filter((p) => p.isFeatured && p.inStock !== false)
+    .filter((p) => p.isFeatured && p.inStock)
     .slice(0, 3);
 
   /* Auto-advance carousel */
@@ -402,43 +400,68 @@ export default function Home() {
                     </Typography>
                   </Stack>
 
-                  <Stack direction="row" alignItems="baseline" spacing={1.5} sx={{ mt: 1 }}>
-                    <Typography variant="h5" sx={{ fontWeight: 900, color: COLOR_PRIMARY_DARK }}>
-                      {CURRENCY_SYMBOL}{product.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                    </Typography>
-                    {product.originalPrice && (
-                      <Typography
-                        variant="body2"
-                        sx={{ color: '#9e9e9e', textDecoration: 'line-through', fontWeight: 600 }}
-                      >
-                        {CURRENCY_SYMBOL}{product.originalPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                  <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 1 }}>
+                    <Stack direction="row" alignItems="baseline" spacing={1.5}>
+                      <Typography variant="h5" sx={{ fontWeight: 900, color: COLOR_PRIMARY_DARK }}>
+                        {CURRENCY_SYMBOL}{product.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                       </Typography>
-                    )}
+                      {product.originalPrice && (
+                        <Typography
+                          variant="body2"
+                          sx={{ color: '#9e9e9e', textDecoration: 'line-through', fontWeight: 600 }}
+                        >
+                          {CURRENCY_SYMBOL}{product.originalPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                        </Typography>
+                      )}
+                    </Stack>
+
+                    <Chip
+                      label={`${product.quantity} in stock`}
+                      size="small"
+                      sx={{
+                        height: 20,
+                        fontSize: '0.68rem',
+                        fontWeight: 800,
+                        bgcolor: product.quantity > 20 ? 'rgba(46, 125, 50, 0.12)' : 'rgba(237, 108, 2, 0.12)',
+                        color: product.quantity > 20 ? '#2e7d32' : '#e65100',
+                        borderRadius: '6px',
+                      }}
+                    />
                   </Stack>
                 </CardContent>
 
                 <CardActions sx={{ p: 2, pt: 0 }}>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    startIcon={<ShoppingCartIcon />}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      addToCart(product, 1);
-                    }}
-                    sx={{
-                      bgcolor: COLOR_PRIMARY_DARK,
-                      '&:hover': { bgcolor: '#c2185b' },
-                      borderRadius: '25px',
-                      py: 1,
-                      fontWeight: 800,
-                      textTransform: 'none',
-                      fontSize: '0.92rem',
-                      boxShadow: '0 4px 12px rgba(236, 64, 122, 0.3)',
-                    }}
-                  >
-                    Add to Cart
-                  </Button>
+                  {(() => {
+                    const currentStock = getProductStock(product.id);
+                    const remaining = getRemainingPurchasable(product.id);
+                    const isSoldOut = currentStock <= 0;
+                    const isMax = !isSoldOut && remaining <= 0;
+
+                    return (
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        disabled={isSoldOut || isMax}
+                        startIcon={<ShoppingCartIcon />}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(product, 1);
+                        }}
+                        sx={{
+                          bgcolor: (isSoldOut || isMax) ? '#e0e0e0' : COLOR_PRIMARY_DARK,
+                          '&:hover': { bgcolor: '#c2185b' },
+                          borderRadius: '25px',
+                          py: 1,
+                          fontWeight: 800,
+                          textTransform: 'none',
+                          fontSize: '0.92rem',
+                          boxShadow: '0 4px 12px rgba(236, 64, 122, 0.3)',
+                        }}
+                      >
+                        {isSoldOut ? 'Sold Out' : isMax ? 'Max in Cart' : 'Add to Cart'}
+                      </Button>
+                    );
+                  })()}
                 </CardActions>
               </Card>
             ))}

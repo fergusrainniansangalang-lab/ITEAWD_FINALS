@@ -29,6 +29,7 @@ import {
   CURRENCY_SYMBOL,
   COLOR_PRIMARY_DARK,
   LS_STOCK_KEY,
+  getProductStock,
 } from '../config';
 
 const ALL_CATEGORIES = [
@@ -371,29 +372,12 @@ export default function ProductListing() {
   /* ── Filtering Logic ── */
   const filtered = useMemo(() => {
     let list = products.map((p) => {
-      let inStock = true;
-      let quantity = 100;
-      try {
-        const stockMap = JSON.parse(localStorage.getItem(LS_STOCK_KEY) || '{}');
-        const itemStock = stockMap[p.id];
-        if (itemStock !== undefined) {
-          if (typeof itemStock === 'object') {
-            inStock = itemStock.inStock ?? (itemStock.quantity > 0);
-            quantity = itemStock.quantity ?? 100;
-          } else if (typeof itemStock === 'boolean') {
-            inStock = itemStock;
-            quantity = itemStock ? 100 : 0;
-          } else if (typeof itemStock === 'number') {
-            quantity = itemStock;
-            inStock = itemStock > 0;
-          }
-        }
-      } catch (_) {}
-      return { ...p, inStock: inStock && quantity > 0, quantity };
+      const quantity = getProductStock(p.id);
+      return { ...p, quantity, inStock: quantity > 0 };
     });
 
     // Remove Out of Stock items (or 0 quantity) from the customer shop
-    list = list.filter((p) => p.inStock !== false && p.quantity > 0);
+    list = list.filter((p) => p.inStock && p.quantity > 0);
 
     // Filter by category
     if (selectedCategories.length > 0) {

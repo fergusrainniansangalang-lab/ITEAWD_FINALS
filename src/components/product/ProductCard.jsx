@@ -9,8 +9,13 @@ import { CURRENCY_SYMBOL, COLOR_PRIMARY_DARK } from '../../config';
 
 export default function ProductCard({ product }) {
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { addToCart, getRemainingPurchasable, getProductStock } = useCart();
   if (!product) return null;
+
+  const currentStock = getProductStock(product.id);
+  const remainingPurchasable = getRemainingPurchasable(product.id);
+  const isSoldOut = currentStock <= 0;
+  const isMaxInCart = !isSoldOut && remainingPurchasable <= 0;
 
   return (
     <Card
@@ -96,14 +101,14 @@ export default function ProductCard({ product }) {
             {CURRENCY_SYMBOL}{product.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </Typography>
           <Chip
-            label={`${product.quantity ?? 100} in stock`}
+            label={isSoldOut ? 'Sold Out' : `${currentStock} in stock`}
             size="small"
             sx={{
               height: 20,
               fontSize: '0.68rem',
               fontWeight: 800,
-              bgcolor: (product.quantity ?? 100) > 20 ? 'rgba(46, 125, 50, 0.12)' : (product.quantity ?? 100) > 0 ? 'rgba(237, 108, 2, 0.12)' : 'rgba(211, 47, 47, 0.12)',
-              color: (product.quantity ?? 100) > 20 ? '#2e7d32' : (product.quantity ?? 100) > 0 ? '#e65100' : '#d32f2f',
+              bgcolor: currentStock > 20 ? 'rgba(46, 125, 50, 0.12)' : currentStock > 0 ? 'rgba(237, 108, 2, 0.12)' : 'rgba(211, 47, 47, 0.12)',
+              color: currentStock > 20 ? '#2e7d32' : currentStock > 0 ? '#e65100' : '#d32f2f',
               borderRadius: '6px',
             }}
           />
@@ -115,14 +120,14 @@ export default function ProductCard({ product }) {
           fullWidth
           variant="contained"
           size="small"
-          disabled={(product.quantity ?? 100) <= 0}
+          disabled={isSoldOut || isMaxInCart}
           startIcon={<ShoppingCartIcon fontSize="small" />}
           onClick={(e) => {
             e.stopPropagation();
             addToCart(product, 1);
           }}
           sx={{
-            bgcolor: (product.quantity ?? 100) <= 0 ? '#e0e0e0' : COLOR_PRIMARY_DARK,
+            bgcolor: (isSoldOut || isMaxInCart) ? '#e0e0e0' : COLOR_PRIMARY_DARK,
             '&:hover': { bgcolor: '#c2185b' },
             borderRadius: '20px',
             py: 0.8,
@@ -131,7 +136,7 @@ export default function ProductCard({ product }) {
             fontSize: '0.85rem',
           }}
         >
-          {(product.quantity ?? 100) <= 0 ? 'Sold Out' : 'Add to Cart'}
+          {isSoldOut ? 'Sold Out' : isMaxInCart ? 'Max in Cart' : 'Add to Cart'}
         </Button>
       </CardActions>
     </Card>

@@ -26,6 +26,7 @@ import {
   LS_ORDERS_KEY,
   LS_STOCK_KEY,
   ORDER_PREFIX,
+  getProductStock,
 } from '../config';
 
 const STEPS = ['Shipping Address', 'Payment Method', 'Order Review'];
@@ -94,6 +95,19 @@ export default function Checkout() {
   };
 
   const handlePlaceOrder = () => {
+    // Verify all cart items against live inventory
+    for (const item of cartItems) {
+      const stock = getProductStock(item.id);
+      if (stock <= 0) {
+        alert(`Cannot place order: "${item.name}" is sold out in Tokyo inventory. Please return to cart and remove it.`);
+        return;
+      }
+      if (item.quantity > stock) {
+        alert(`Cannot place order: You have ${item.quantity} units of "${item.name}" in your cart, but only ${stock} units are left in stock.`);
+        return;
+      }
+    }
+
     const orderId = `${ORDER_PREFIX}-${Math.floor(1000 + Math.random() * 9000)}`;
     const customerFullName = `${ship.firstName || ''} ${ship.lastName || ''}`.trim() || 'Guest Customer';
     const customerDestination = `${ship.city || 'Metro Manila'}${ship.province ? `, ${ship.province}` : ''}, Philippines`;
@@ -118,8 +132,7 @@ export default function Checkout() {
     try {
       const currentStockMap = JSON.parse(localStorage.getItem(LS_STOCK_KEY) || '{}');
       cartItems.forEach((item) => {
-        const cur = currentStockMap[item.id] || { inStock: true, quantity: 100 };
-        const currentQty = typeof cur === 'object' ? (cur.quantity ?? 100) : (cur ? 100 : 0);
+        const currentQty = getProductStock(item.id);
         const updatedQty = Math.max(0, currentQty - (item.quantity || 1));
         currentStockMap[item.id] = {
           inStock: updatedQty > 0,

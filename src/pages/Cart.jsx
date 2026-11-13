@@ -24,6 +24,7 @@ import {
   FLAT_SHIPPING_FEE,
   CURRENCY_SYMBOL,
   COLOR_PRIMARY_DARK,
+  getProductStock,
 } from '../config';
 
 export default function Cart() {
@@ -32,6 +33,7 @@ export default function Cart() {
 
   const shipping = cartTotal >= FREE_SHIPPING_THRESHOLD ? 0 : FLAT_SHIPPING_FEE;
   const total = cartTotal + shipping;
+  const hasOutOfStockItems = cartItems.some((item) => getProductStock(item.id) <= 0);
 
   if (cartItems.length === 0) {
     return (
@@ -151,38 +153,71 @@ export default function Cart() {
                             <Typography variant="subtitle2" fontWeight={800} sx={{ maxWidth: { xs: 160, sm: 280 } }}>
                               {item.name}
                             </Typography>
-                            <Typography variant="caption" color="text.secondary">
+                            <Typography variant="caption" color="text.secondary" display="block">
                               {CURRENCY_SYMBOL}{item.price.toLocaleString(undefined, { minimumFractionDigits: 2 })} each
                             </Typography>
+                            {(() => {
+                              const maxStock = getProductStock(item.id);
+                              const isAtLimit = item.quantity >= maxStock;
+                              if (maxStock <= 0) {
+                                return (
+                                  <Typography variant="caption" sx={{ color: '#d32f2f', fontWeight: 800 }}>
+                                    ❌ Out of stock in Tokyo hub
+                                  </Typography>
+                                );
+                              }
+                              if (isAtLimit) {
+                                return (
+                                  <Typography variant="caption" sx={{ color: '#e65100', fontWeight: 800 }}>
+                                    ⚠️ Max units ({maxStock}) in cart
+                                  </Typography>
+                                );
+                              }
+                              return (
+                                <Typography variant="caption" sx={{ color: '#2e7d32', fontWeight: 700 }}>
+                                  ✓ {maxStock} units left in stock
+                                </Typography>
+                              );
+                            })()}
                           </Box>
                         </Stack>
                       </TableCell>
 
                       {/* Quantity Controls */}
                       <TableCell align="center">
-                        <Stack
-                          direction="row"
-                          alignItems="center"
-                          justifyContent="center"
-                          spacing={0.5}
-                          sx={{
-                            border: '1.5px solid #F48FB1',
-                            borderRadius: '25px',
-                            px: 0.8,
-                            py: 0.2,
-                            display: 'inline-flex',
-                          }}
-                        >
-                          <IconButton size="small" onClick={() => updateQuantity(item.id, item.quantity - 1)}>
-                            <RemoveIcon fontSize="small" sx={{ color: COLOR_PRIMARY_DARK }} />
-                          </IconButton>
-                          <Typography variant="body2" fontWeight={800} sx={{ minWidth: 26, textAlign: 'center' }}>
-                            {item.quantity}
-                          </Typography>
-                          <IconButton size="small" onClick={() => updateQuantity(item.id, item.quantity + 1)}>
-                            <AddIcon fontSize="small" sx={{ color: COLOR_PRIMARY_DARK }} />
-                          </IconButton>
-                        </Stack>
+                        {(() => {
+                          const maxStock = getProductStock(item.id);
+                          const isAtLimit = item.quantity >= maxStock;
+                          return (
+                            <Stack
+                              direction="row"
+                              alignItems="center"
+                              justifyContent="center"
+                              spacing={0.5}
+                              sx={{
+                                border: '1.5px solid #F48FB1',
+                                borderRadius: '25px',
+                                px: 0.8,
+                                py: 0.2,
+                                display: 'inline-flex',
+                              }}
+                            >
+                              <IconButton size="small" onClick={() => updateQuantity(item.id, item.quantity - 1)}>
+                                <RemoveIcon fontSize="small" sx={{ color: COLOR_PRIMARY_DARK }} />
+                              </IconButton>
+                              <Typography variant="body2" fontWeight={800} sx={{ minWidth: 26, textAlign: 'center' }}>
+                                {item.quantity}
+                              </Typography>
+                              <IconButton
+                                size="small"
+                                disabled={isAtLimit}
+                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              >
+                                <AddIcon fontSize="small" sx={{ color: isAtLimit ? '#bdbdbd' : COLOR_PRIMARY_DARK }} />
+                              </IconButton>
+                            </Stack>
+                          );
+                        })()}
                       </TableCell>
 
                       {/* Subtotal */}
@@ -272,14 +307,21 @@ export default function Cart() {
                   </Stack>
                 </Stack>
 
+                {hasOutOfStockItems && (
+                  <Typography variant="caption" sx={{ color: '#d32f2f', fontWeight: 700, mt: 2, display: 'block', textAlign: 'center' }}>
+                    ⚠️ One or more items in your cart are out of stock. Please remove them to proceed.
+                  </Typography>
+                )}
+
                 <Button
                   variant="contained"
                   fullWidth
                   size="large"
+                  disabled={hasOutOfStockItems}
                   onClick={() => navigate(paths.checkout)}
                   sx={{
-                    mt: 3.5,
-                    bgcolor: COLOR_PRIMARY_DARK,
+                    mt: hasOutOfStockItems ? 1.5 : 3.5,
+                    bgcolor: hasOutOfStockItems ? '#e0e0e0' : COLOR_PRIMARY_DARK,
                     '&:hover': { bgcolor: '#c2185b' },
                     borderRadius: '25px',
                     py: 1.4,

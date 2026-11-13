@@ -25,12 +25,13 @@ import {
   CURRENCY_SYMBOL,
   COLOR_PRIMARY_DARK,
   LS_STOCK_KEY,
+  getProductStock,
 } from '../config';
 
 export default function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { addToCart, getItemInCartCount, getRemainingPurchasable } = useCart();
 
   const product = useMemo(() => {
     const raw = products.find((p) => p.id === id) || products[0];
@@ -237,102 +238,122 @@ export default function ProductDetails() {
               )}
 
               {/* Live Inventory Availability Indicator */}
-              <Stack direction="row" alignItems="center" spacing={1.2} mb={2.5}>
-                <Typography variant="body2" fontWeight={700} color="#666666">
-                  Availability:
-                </Typography>
-                <Chip
-                  label={product.quantity > 0 ? `${product.quantity} units available in Tokyo hub` : 'Sold Out / Out of Stock'}
-                  size="small"
-                  sx={{
-                    fontWeight: 800,
-                    bgcolor: product.quantity > 20 ? '#e8f5e9' : product.quantity > 0 ? '#fff3e0' : '#ffebee',
-                    color: product.quantity > 20 ? '#2e7d32' : product.quantity > 0 ? '#e65100' : '#c62828',
-                  }}
-                />
-              </Stack>
+              {(() => {
+                const currentStock = getProductStock(product.id);
+                const inCart = getItemInCartCount(product.id);
+                const availableToAdd = Math.max(0, currentStock - inCart);
+                const isSoldOut = currentStock <= 0;
+                const isMaxInCart = !isSoldOut && availableToAdd <= 0;
 
-              {/* Quantity Selector + Add to Cart + Buy Now */}
-              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ sm: 'center' }} sx={{ mb: 2 }}>
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  spacing={1}
-                  sx={{
-                    border: `1.5px solid #F48FB1`,
-                    borderRadius: '30px',
-                    px: 1,
-                    py: 0.3,
-                    width: 'fit-content',
-                  }}
-                >
-                  <IconButton
-                    size="small"
-                    onClick={() => setQty((q) => Math.max(1, q - 1))}
-                    disabled={qty <= 1 || product.quantity <= 0}
-                  >
-                    <RemoveIcon fontSize="small" sx={{ color: COLOR_PRIMARY_DARK }} />
-                  </IconButton>
-                  <Typography variant="subtitle1" fontWeight={800} sx={{ minWidth: 32, textAlign: 'center' }}>
-                    {product.quantity <= 0 ? 0 : qty}
-                  </Typography>
-                  <IconButton
-                    size="small"
-                    onClick={() => setQty((q) => Math.min(product.quantity, q + 1))}
-                    disabled={qty >= product.quantity || product.quantity <= 0}
-                  >
-                    <AddIcon fontSize="small" sx={{ color: COLOR_PRIMARY_DARK }} />
-                  </IconButton>
-                </Stack>
+                return (
+                  <>
+                    <Stack direction="row" alignItems="center" spacing={1.2} mb={2.5}>
+                      <Typography variant="body2" fontWeight={700} color="#666666">
+                        Availability:
+                      </Typography>
+                      <Chip
+                        label={
+                          isSoldOut
+                            ? 'Sold Out / Out of Stock'
+                            : isMaxInCart
+                            ? `${currentStock} units in Tokyo hub (Max ${inCart} in your cart)`
+                            : inCart > 0
+                            ? `${currentStock} units in Tokyo hub (${inCart} in your cart, ${availableToAdd} more left)`
+                            : `${currentStock} units available in Tokyo hub`
+                        }
+                        size="small"
+                        sx={{
+                          fontWeight: 800,
+                          bgcolor: isSoldOut ? '#ffebee' : isMaxInCart ? '#fff3e0' : currentStock > 20 ? '#e8f5e9' : '#fff3e0',
+                          color: isSoldOut ? '#c62828' : isMaxInCart ? '#e65100' : currentStock > 20 ? '#2e7d32' : '#e65100',
+                        }}
+                      />
+                    </Stack>
 
-                <Button
-                  variant="contained"
-                  size="large"
-                  disabled={product.quantity <= 0}
-                  startIcon={<ShoppingCartIcon />}
-                  onClick={handleAddToCart}
-                  sx={{
-                    bgcolor: COLOR_PRIMARY_DARK,
-                    '&:hover': { bgcolor: '#c2185b' },
-                    borderRadius: '25px',
-                    py: 1.2,
-                    px: 3.5,
-                    fontWeight: 800,
-                    textTransform: 'none',
-                    fontSize: '0.95rem',
-                    flex: 1,
-                  }}
-                >
-                  {product.quantity <= 0 ? 'Sold Out' : 'Add to Cart'}
-                </Button>
+                    {/* Quantity Selector + Add to Cart + Buy Now */}
+                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ sm: 'center' }} sx={{ mb: 2 }}>
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        spacing={1}
+                        sx={{
+                          border: `1.5px solid #F48FB1`,
+                          borderRadius: '30px',
+                          px: 1,
+                          py: 0.3,
+                          width: 'fit-content',
+                        }}
+                      >
+                        <IconButton
+                          size="small"
+                          onClick={() => setQty((q) => Math.max(1, q - 1))}
+                          disabled={qty <= 1 || isSoldOut || isMaxInCart}
+                        >
+                          <RemoveIcon fontSize="small" sx={{ color: COLOR_PRIMARY_DARK }} />
+                        </IconButton>
+                        <Typography variant="subtitle1" fontWeight={800} sx={{ minWidth: 32, textAlign: 'center' }}>
+                          {isSoldOut || isMaxInCart ? 0 : qty}
+                        </Typography>
+                        <IconButton
+                          size="small"
+                          onClick={() => setQty((q) => Math.min(availableToAdd, q + 1))}
+                          disabled={qty >= availableToAdd || isSoldOut || isMaxInCart}
+                        >
+                          <AddIcon fontSize="small" sx={{ color: COLOR_PRIMARY_DARK }} />
+                        </IconButton>
+                      </Stack>
 
-                <Button
-                  variant="outlined"
-                  size="large"
-                  disabled={product.quantity <= 0}
-                  onClick={() => {
-                    addToCart(product, qty);
-                    navigate(paths.checkout);
-                  }}
-                  sx={{
-                    borderColor: COLOR_PRIMARY_DARK,
-                    color: COLOR_PRIMARY_DARK,
-                    borderRadius: '25px',
-                    py: 1.2,
-                    px: 3,
-                    fontWeight: 800,
-                    textTransform: 'none',
-                    borderWidth: 2,
-                    '&:hover': {
-                      bgcolor: '#FCE4EC',
-                      borderColor: COLOR_PRIMARY_DARK,
-                      borderWidth: 2,
-                    },
-                  }}
-                >
-                  Buy Now
-                </Button>
-              </Stack>
+                      <Button
+                        variant="contained"
+                        size="large"
+                        disabled={isSoldOut || isMaxInCart}
+                        startIcon={<ShoppingCartIcon />}
+                        onClick={handleAddToCart}
+                        sx={{
+                          bgcolor: COLOR_PRIMARY_DARK,
+                          '&:hover': { bgcolor: '#c2185b' },
+                          borderRadius: '25px',
+                          py: 1.2,
+                          px: 3.5,
+                          fontWeight: 800,
+                          textTransform: 'none',
+                          fontSize: '0.95rem',
+                          flex: 1,
+                        }}
+                      >
+                        {isSoldOut ? 'Sold Out' : isMaxInCart ? 'Max in Cart' : 'Add to Cart'}
+                      </Button>
+
+                      <Button
+                        variant="outlined"
+                        size="large"
+                        disabled={isSoldOut || isMaxInCart}
+                        onClick={() => {
+                          addToCart(product, qty);
+                          navigate(paths.checkout);
+                        }}
+                        sx={{
+                          borderColor: COLOR_PRIMARY_DARK,
+                          color: COLOR_PRIMARY_DARK,
+                          borderRadius: '25px',
+                          py: 1.2,
+                          px: 3,
+                          fontWeight: 800,
+                          textTransform: 'none',
+                          borderWidth: 2,
+                          '&:hover': {
+                            bgcolor: '#FCE4EC',
+                            borderColor: COLOR_PRIMARY_DARK,
+                            borderWidth: 2,
+                          },
+                        }}
+                      >
+                        Buy Now
+                      </Button>
+                    </Stack>
+                  </>
+                );
+              })()}
 
               <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
                 SKU: {product.sku} &nbsp;•&nbsp; {product.inStock ? '✅ In Stock in Tokyo & Manila Hub' : '❌ Out of Stock'}

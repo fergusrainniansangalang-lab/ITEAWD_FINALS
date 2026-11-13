@@ -204,6 +204,7 @@ export default function AdminDashboard({ open, onClose }) {
         stockMap[p.id] = { inStock: p.inStock && p.quantity > 0, quantity: Math.max(0, p.quantity || 0) };
       });
       localStorage.setItem(LS_STOCK_KEY, JSON.stringify(stockMap));
+      window.dispatchEvent(new Event('storage'));
     } catch (_) {}
   };
 

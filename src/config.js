@@ -45,6 +45,28 @@ export const LS_TICKETS_KEY = 'raijoukaku_tickets';
 export const LS_STOCK_KEY = 'raijoukaku_stock';
 export const LS_SETTINGS_KEY = 'raijoukaku_settings';
 
+/**
+ * Universal inventory resolver ensuring customer shop stock strictly mirrors admin stock.
+ * Default base quantity is 100 units.
+ */
+export const getProductStock = (productId) => {
+  try {
+    const stockMap = JSON.parse(localStorage.getItem(LS_STOCK_KEY) || '{}');
+    const itemStock = stockMap[productId];
+    if (itemStock !== undefined) {
+      if (typeof itemStock === 'object' && itemStock !== null) {
+        const inStock = itemStock.inStock ?? (itemStock.quantity > 0);
+        return inStock ? Math.max(0, Number(itemStock.quantity ?? 100)) : 0;
+      } else if (typeof itemStock === 'boolean') {
+        return itemStock ? 100 : 0;
+      } else if (typeof itemStock === 'number') {
+        return Math.max(0, itemStock);
+      }
+    }
+  } catch (_) {}
+  return 100;
+};
+
 /* ── Sakura Pink Color Palette ── */
 export const COLOR_PRIMARY = '#F48FB1';       // Sakura pink
 export const COLOR_PRIMARY_DARK = '#EC407A';  // Vibrant Japanese pink / accent
