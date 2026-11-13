@@ -89,6 +89,7 @@ export const AuthProvider = ({ children }) => {
 
   /**
    * Sign in an existing user dynamically verifying credentials.
+   * Strictly blocks login if the account has not been registered in localStorage.
    */
   const login = (email, password) => {
     const cleanEmail = (email || '').trim().toLowerCase();
@@ -99,30 +100,20 @@ export const AuthProvider = ({ children }) => {
     const accounts = getRegisteredAccounts();
     const existing = accounts.find((a) => a.email === cleanEmail);
 
-    if (existing) {
-      if (existing.password !== password) {
-        return { success: false, message: 'Incorrect password. Please try again.' };
-      }
-      const sessionUser = { id: existing.id, name: existing.name, email: existing.email };
-      setUser(sessionUser);
-      localStorage.setItem(LS_USER_KEY, JSON.stringify(sessionUser));
-      window.dispatchEvent(new Event('storage'));
-      return { success: true, user: sessionUser };
+    // If account was never registered, refuse login
+    if (!existing) {
+      return {
+        success: false,
+        message: 'Account not found. You must register an account first before signing in.',
+      };
     }
 
-    // If account not found, dynamically create account with name from email
-    const fallbackName = cleanEmail.split('@')[0].replace(/[._]/g, ' ');
-    const formattedName = fallbackName.charAt(0).toUpperCase() + fallbackName.slice(1);
-    const newAccount = {
-      id: `usr_${Date.now()}`,
-      name: formattedName,
-      email: cleanEmail,
-      password: password,
-      registeredAt: new Date().toISOString(),
-    };
-    localStorage.setItem(LS_ACCOUNTS_KEY, JSON.stringify([newAccount, ...accounts]));
+    // Verify password for registered account
+    if (existing.password !== password) {
+      return { success: false, message: 'Incorrect password. Please try again.' };
+    }
 
-    const sessionUser = { id: newAccount.id, name: newAccount.name, email: newAccount.email };
+    const sessionUser = { id: existing.id, name: existing.name, email: existing.email };
     setUser(sessionUser);
     localStorage.setItem(LS_USER_KEY, JSON.stringify(sessionUser));
     window.dispatchEvent(new Event('storage'));
