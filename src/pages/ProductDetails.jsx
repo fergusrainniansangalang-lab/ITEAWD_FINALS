@@ -35,11 +35,25 @@ export default function ProductDetails() {
   const product = useMemo(() => {
     const raw = products.find((p) => p.id === id) || products[0];
     if (!raw) return raw;
+    let inStock = true;
+    let quantity = 100;
     try {
       const stockMap = JSON.parse(localStorage.getItem(LS_STOCK_KEY) || '{}');
-      if (stockMap[raw.id] !== undefined) return { ...raw, inStock: stockMap[raw.id] };
+      const itemStock = stockMap[raw.id];
+      if (itemStock !== undefined) {
+        if (typeof itemStock === 'object') {
+          inStock = itemStock.inStock ?? (itemStock.quantity > 0);
+          quantity = itemStock.quantity ?? 100;
+        } else if (typeof itemStock === 'boolean') {
+          inStock = itemStock;
+          quantity = itemStock ? 100 : 0;
+        } else if (typeof itemStock === 'number') {
+          quantity = itemStock;
+          inStock = itemStock > 0;
+        }
+      }
     } catch (_) {}
-    return raw;
+    return { ...raw, inStock: inStock && quantity > 0, quantity };
   }, [id]);
 
   const [mainImg, setMainImg] = useState(0);
@@ -222,6 +236,22 @@ export default function ProductDetails() {
                 </Box>
               )}
 
+              {/* Live Inventory Availability Indicator */}
+              <Stack direction="row" alignItems="center" spacing={1.2} mb={2.5}>
+                <Typography variant="body2" fontWeight={700} color="#666666">
+                  Availability:
+                </Typography>
+                <Chip
+                  label={product.quantity > 0 ? `${product.quantity} units available in Tokyo hub` : 'Sold Out / Out of Stock'}
+                  size="small"
+                  sx={{
+                    fontWeight: 800,
+                    bgcolor: product.quantity > 20 ? '#e8f5e9' : product.quantity > 0 ? '#fff3e0' : '#ffebee',
+                    color: product.quantity > 20 ? '#2e7d32' : product.quantity > 0 ? '#e65100' : '#c62828',
+                  }}
+                />
+              </Stack>
+
               {/* Quantity Selector + Add to Cart + Buy Now */}
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ sm: 'center' }} sx={{ mb: 2 }}>
                 <Stack
@@ -236,13 +266,21 @@ export default function ProductDetails() {
                     width: 'fit-content',
                   }}
                 >
-                  <IconButton size="small" onClick={() => setQty((q) => Math.max(1, q - 1))}>
+                  <IconButton
+                    size="small"
+                    onClick={() => setQty((q) => Math.max(1, q - 1))}
+                    disabled={qty <= 1 || product.quantity <= 0}
+                  >
                     <RemoveIcon fontSize="small" sx={{ color: COLOR_PRIMARY_DARK }} />
                   </IconButton>
                   <Typography variant="subtitle1" fontWeight={800} sx={{ minWidth: 32, textAlign: 'center' }}>
-                    {qty}
+                    {product.quantity <= 0 ? 0 : qty}
                   </Typography>
-                  <IconButton size="small" onClick={() => setQty((q) => q + 1)}>
+                  <IconButton
+                    size="small"
+                    onClick={() => setQty((q) => Math.min(product.quantity, q + 1))}
+                    disabled={qty >= product.quantity || product.quantity <= 0}
+                  >
                     <AddIcon fontSize="small" sx={{ color: COLOR_PRIMARY_DARK }} />
                   </IconButton>
                 </Stack>
@@ -250,6 +288,7 @@ export default function ProductDetails() {
                 <Button
                   variant="contained"
                   size="large"
+                  disabled={product.quantity <= 0}
                   startIcon={<ShoppingCartIcon />}
                   onClick={handleAddToCart}
                   sx={{
@@ -264,12 +303,13 @@ export default function ProductDetails() {
                     flex: 1,
                   }}
                 >
-                  Add to Cart
+                  {product.quantity <= 0 ? 'Sold Out' : 'Add to Cart'}
                 </Button>
 
                 <Button
                   variant="outlined"
                   size="large"
+                  disabled={product.quantity <= 0}
                   onClick={() => {
                     addToCart(product, qty);
                     navigate(paths.checkout);

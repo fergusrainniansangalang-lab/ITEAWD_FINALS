@@ -6,11 +6,12 @@
  * with password from config (ADMIN_PASSWORD).
  *
  * Dynamic Features:
- * 1. Overview KPIs dynamically computed from real data (Revenue, Orders, Inventory, Tickets).
- * 2. Real-time Inventory Manager with persistent In/Out of Stock toggles stored in localStorage.
- * 3. Recent Orders Manager synced with localStorage orders (placed via Checkout).
- * 4. Customer Service Inquiries Queue synced with localStorage tickets (filed via Contact).
- * 5. Dynamic Logistics & System Configuration with live save to localStorage.
+ * 1. Overview KPIs dynamically computed from real data (Revenue, Orders, Inventory Units, Tickets).
+ * 2. 100-Quantity Inventory Manager with live stock tracking and remaining units.
+ * 3. Safe Dropdown Actions for Orders, Inventory, and Support to prevent misclicks.
+ * 4. Recent Orders Manager synced with localStorage orders (placed via Checkout).
+ * 5. Customer Service Inquiries Queue synced with localStorage tickets (filed via Contact).
+ * 6. Dynamic Logistics & System Configuration with live save to localStorage.
  * ============================================================
  */
 import React, { useState, useEffect, useMemo } from 'react';
@@ -18,7 +19,8 @@ import {
   Dialog, AppBar, Toolbar, Typography, Box, Container,
   Tabs, Tab, Card, CardContent, Button, Chip, TextField, InputBase,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, Switch, FormControlLabel, Stack, Divider, Snackbar, Alert
+  Paper, Switch, FormControlLabel, Stack, Divider, Snackbar, Alert,
+  Select, MenuItem, FormControl, IconButton
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
@@ -28,6 +30,8 @@ import SupportAgentOutlinedIcon from '@mui/icons-material/SupportAgentOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import { products as initialProducts } from 'data/products';
 import {
   SITE_NAME,
@@ -63,16 +67,35 @@ const DEFAULT_SEED_TICKETS = [
 export default function AdminDashboard({ open, onClose }) {
   const [currentTab, setCurrentTab] = useState(0);
 
-  /* 1. Dynamic Products with persistent stock status */
+  /* 1. Dynamic Products with 100 base quantities and persistent stock status */
   const [productList, setProductList] = useState(() => {
     try {
       const storedStock = JSON.parse(localStorage.getItem(LS_STOCK_KEY) || '{}');
-      return initialProducts.map((p) => ({
-        ...p,
-        inStock: storedStock[p.id] !== undefined ? storedStock[p.id] : p.inStock,
-      }));
+      return initialProducts.map((p) => {
+        const itemStock = storedStock[p.id];
+        let inStock = true;
+        let quantity = 100; // 100 default quantities per product
+
+        if (itemStock !== undefined) {
+          if (typeof itemStock === 'object') {
+            inStock = itemStock.inStock ?? (itemStock.quantity > 0);
+            quantity = itemStock.quantity ?? (inStock ? 100 : 0);
+          } else if (typeof itemStock === 'boolean') {
+            inStock = itemStock;
+            quantity = itemStock ? 100 : 0;
+          } else if (typeof itemStock === 'number') {
+            quantity = itemStock;
+            inStock = itemStock > 0;
+          }
+        }
+        return {
+          ...p,
+          inStock,
+          quantity,
+        };
+      });
     } catch (_) {
-      return initialProducts;
+      return initialProducts.map((p) => ({ ...p, inStock: true, quantity: 100 }));
     }
   });
 
@@ -122,7 +145,7 @@ export default function AdminDashboard({ open, onClose }) {
   const [snackMessage, setSnackMessage] = useState('');
   const [snackOpen, setSnackOpen] = useState(false);
 
-  // Sync orders with localStorage when opening
+  // Sync data whenever admin opens
   useEffect(() => {
     if (open) {
       try {
@@ -134,6 +157,24 @@ export default function AdminDashboard({ open, onClose }) {
         if (Array.isArray(storedTickets) && storedTickets.length > 0) {
           setTicketList(storedTickets);
         }
+        const storedStock = JSON.parse(localStorage.getItem(LS_STOCK_KEY) || '{}');
+        setProductList((prev) =>
+          prev.map((p) => {
+            const itemStock = storedStock[p.id];
+            if (itemStock !== undefined) {
+              if (typeof itemStock === 'object') {
+                return { ...p, inStock: itemStock.inStock ?? (itemStock.quantity > 0), quantity: itemStock.quantity ?? 100 };
+              }
+              if (typeof itemStock === 'boolean') {
+                return { ...p, inStock: itemStock, quantity: itemStock ? 100 : 0 };
+              }
+              if (typeof itemStock === 'number') {
+                return { ...p, inStock: itemStock > 0, quantity: itemStock };
+              }
+            }
+            return p;
+          })
+        );
       } catch (_) {}
     }
   }, [open]);
@@ -144,46 +185,86 @@ export default function AdminDashboard({ open, onClose }) {
   }, [orderList]);
 
   const activeTicketsCount = useMemo(() => {
-    return ticketList.filter((t) => t.status !== 'Resolved').length;
+    return ticketList.filter((t) => t.status !== 'Resolved' && t.status !== 'Closed').length;
   }, [ticketList]);
 
   const inStockCount = useMemo(() => {
-    return productList.filter((p) => p.inStock).length;
+    return productList.filter((p) => p.inStock && p.quantity > 0).length;
   }, [productList]);
 
-  // Toggle In Stock / Out of Stock and persist
-  const handleToggleStock = (productId) => {
+  const totalAvailableUnits = useMemo(() => {
+    return productList.reduce((acc, p) => acc + (p.inStock ? (p.quantity || 0) : 0), 0);
+  }, [productList]);
+
+  // Save full stock state to localStorage helper
+  const persistStockMap = (list) => {
+    try {
+      const stockMap = {};
+      list.forEach((p) => {
+        stockMap[p.id] = { inStock: p.inStock && p.quantity > 0, quantity: Math.max(0, p.quantity || 0) };
+      });
+      localStorage.setItem(LS_STOCK_KEY, JSON.stringify(stockMap));
+    } catch (_) {}
+  };
+
+  // Modify Quantity directly
+  const handleQuantityChange = (productId, deltaOrAbsolute, isAbsolute = false) => {
     setProductList((prev) => {
       const next = prev.map((p) => {
         if (p.id === productId) {
-          const updated = !p.inStock;
-          setSnackMessage(`${p.name} has been ${updated ? 'restored to the shop' : 'removed from the shop (Out of Stock)'}`);
-          setSnackOpen(true);
-          return { ...p, inStock: updated };
+          const newQty = Math.max(0, isAbsolute ? deltaOrAbsolute : (p.quantity + deltaOrAbsolute));
+          const updatedInStock = newQty > 0;
+          return { ...p, quantity: newQty, inStock: updatedInStock };
         }
         return p;
       });
-      try {
-        const stockMap = {};
-        next.forEach((p) => { stockMap[p.id] = p.inStock; });
-        localStorage.setItem(LS_STOCK_KEY, JSON.stringify(stockMap));
-      } catch (_) {}
+      persistStockMap(next);
       return next;
     });
   };
 
-  // Update Order Status and persist
-  const handleNextOrderStatus = (orderId) => {
+  // Dropdown action on product
+  const handleProductActionDropdown = (productId, action) => {
+    setProductList((prev) => {
+      const next = prev.map((p) => {
+        if (p.id === productId) {
+          if (action === 'active') {
+            const restoredQty = p.quantity > 0 ? p.quantity : 100;
+            setSnackMessage(`${p.name} is now ACTIVE in shop (${restoredQty} units).`);
+            return { ...p, inStock: true, quantity: restoredQty };
+          }
+          if (action === 'remove') {
+            setSnackMessage(`${p.name} has been REMOVED from the shop.`);
+            return { ...p, inStock: false };
+          }
+          if (action === 'set100') {
+            setSnackMessage(`${p.name} quantity restocked to 100 units.`);
+            return { ...p, inStock: true, quantity: 100 };
+          }
+          if (action === 'add50') {
+            const updated = p.quantity + 50;
+            setSnackMessage(`${p.name} stock increased to ${updated} units.`);
+            return { ...p, inStock: true, quantity: updated };
+          }
+          if (action === 'zero') {
+            setSnackMessage(`${p.name} set to 0 units (Sold Out).`);
+            return { ...p, inStock: false, quantity: 0 };
+          }
+        }
+        return p;
+      });
+      persistStockMap(next);
+      setSnackOpen(true);
+      return next;
+    });
+  };
+
+  // Dropdown status update for Orders (prevents misclicks)
+  const handleUpdateOrderStatus = (orderId, newStatus) => {
     setOrderList((prev) => {
       const nextList = prev.map((ord) => {
         if (ord.id === orderId) {
-          let next = 'Delivered';
-          if (ord.status === 'Processing') next = 'Shipped from Tokyo';
-          else if (ord.status === 'Shipped from Tokyo') next = 'In Transit';
-          else if (ord.status === 'In Transit') next = 'Delivered';
-          setSnackMessage(`Order ${orderId} status updated to: ${next}`);
-          setSnackOpen(true);
-          return { ...ord, status: next };
+          return { ...ord, status: newStatus };
         }
         return ord;
       });
@@ -192,16 +273,15 @@ export default function AdminDashboard({ open, onClose }) {
       } catch (_) {}
       return nextList;
     });
+    setSnackMessage(`Order ${orderId} status set to: ${newStatus}`);
+    setSnackOpen(true);
   };
 
-  // Resolve Ticket and persist
-  const handleResolveTicket = (ticketId) => {
+  // Dropdown status update for Support Tickets
+  const handleUpdateTicketStatus = (ticketId, newStatus) => {
     setTicketList((prev) => {
       const nextList = prev.map((t) => {
         if (t.id === ticketId) {
-          const newStatus = t.status === 'Resolved' ? 'Pending Review' : 'Resolved';
-          setSnackMessage(`Ticket ${ticketId} marked as ${newStatus}`);
-          setSnackOpen(true);
           return { ...t, status: newStatus };
         }
         return t;
@@ -211,6 +291,8 @@ export default function AdminDashboard({ open, onClose }) {
       } catch (_) {}
       return nextList;
     });
+    setSnackMessage(`Ticket ${ticketId} status set to: ${newStatus}`);
+    setSnackOpen(true);
   };
 
   // Save Settings
@@ -283,7 +365,7 @@ export default function AdminDashboard({ open, onClose }) {
       {/* ── Dashboard Body ── */}
       <Box sx={{ bgcolor: '#F4F5F7', minHeight: '100vh', pb: 6 }}>
         <Container maxWidth="xl" sx={{ pt: 3.5 }}>
-          {/* ── Dynamic Overview Statistics Cards (Zero Hardcoded Values) ── */}
+          {/* ── Dynamic Overview Statistics Cards ── */}
           <Box
             sx={{
               display: 'grid',
@@ -306,15 +388,15 @@ export default function AdminDashboard({ open, onClose }) {
                 color: '#1976d2',
               },
               {
-                label: 'Catalog Inventory',
-                value: `${productList.length} Items`,
-                sub: `${inStockCount} In Stock • ${productList.length - inStockCount} Out of Stock`,
+                label: 'Available Stock Units',
+                value: `${totalAvailableUnits.toLocaleString()} Units`,
+                sub: `${inStockCount} active products in shop (${productList.length - inStockCount} out of stock)`,
                 color: '#EC407A',
               },
               {
                 label: 'Customer Support Tickets',
                 value: `${activeTicketsCount} Active`,
-                sub: `${ticketList.filter(t => t.status === 'Resolved').length} Resolved`,
+                sub: `${ticketList.filter(t => t.status === 'Resolved' || t.status === 'Closed').length} Resolved/Closed`,
                 color: '#ed6c02',
               },
             ].map((stat) => (
@@ -343,7 +425,7 @@ export default function AdminDashboard({ open, onClose }) {
               TabIndicatorProps={{ style: { backgroundColor: '#EC407A', height: 3 } }}
               sx={{ px: 2 }}
             >
-              <Tab icon={<InventoryOutlinedIcon />} iconPosition="start" label={`Inventory (${productList.length})`} sx={{ textTransform: 'none', fontWeight: 800, color: currentTab === 0 ? '#EC407A' : 'inherit' }} />
+              <Tab icon={<InventoryOutlinedIcon />} iconPosition="start" label={`Inventory & 100 Qty (${productList.length})`} sx={{ textTransform: 'none', fontWeight: 800, color: currentTab === 0 ? '#EC407A' : 'inherit' }} />
               <Tab icon={<ReceiptLongOutlinedIcon />} iconPosition="start" label={`Orders & Shipments (${orderList.length})`} sx={{ textTransform: 'none', fontWeight: 800, color: currentTab === 1 ? '#EC407A' : 'inherit' }} />
               <Tab icon={<SupportAgentOutlinedIcon />} iconPosition="start" label={`Support Queue (${ticketList.length})`} sx={{ textTransform: 'none', fontWeight: 800, color: currentTab === 2 ? '#EC407A' : 'inherit' }} />
               <Tab icon={<SettingsOutlinedIcon />} iconPosition="start" label="Store Settings" sx={{ textTransform: 'none', fontWeight: 800, color: currentTab === 3 ? '#EC407A' : 'inherit' }} />
@@ -351,17 +433,17 @@ export default function AdminDashboard({ open, onClose }) {
           </Paper>
 
           {/* ══════════════════════════════════════════════════════════
-              TAB 0: INVENTORY & PRODUCT MANAGEMENT
+              TAB 0: INVENTORY & 100 QUANTITIES MANAGEMENT
           ══════════════════════════════════════════════════════════ */}
           {currentTab === 0 && (
             <Card elevation={1} sx={{ borderRadius: '16px', border: '1px solid #E0E0E0', overflow: 'hidden' }}>
               <Box sx={{ p: 2.5, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { sm: 'center' }, gap: 2, bgcolor: '#ffffff' }}>
                 <Box>
                   <Typography variant="h6" fontWeight={900}>
-                    Japanese Product Catalog ({productList.length} Items)
+                    Japanese Product Catalog & Quantities ({productList.length} Items)
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
-                    Manage real-time availability, SKUs, and pricing across all categories
+                    Each product starts with 100 units. Adjust quantities or use safe dropdown actions to control shop visibility.
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: '#FCE4EC', borderRadius: '25px', px: 2, py: 0.4, border: '1px solid #F8BBD0' }}>
@@ -383,81 +465,137 @@ export default function AdminDashboard({ open, onClose }) {
                       <TableCell sx={{ fontWeight: 800, bgcolor: '#FAF0F3' }}>Category</TableCell>
                       <TableCell sx={{ fontWeight: 800, bgcolor: '#FAF0F3' }}>SKU</TableCell>
                       <TableCell align="right" sx={{ fontWeight: 800, bgcolor: '#FAF0F3' }}>Price</TableCell>
-                      <TableCell align="center" sx={{ fontWeight: 800, bgcolor: '#FAF0F3' }}>Stock Status</TableCell>
-                      <TableCell align="center" sx={{ fontWeight: 800, bgcolor: '#FAF0F3' }}>Actions</TableCell>
+                      <TableCell align="center" sx={{ fontWeight: 800, bgcolor: '#FAF0F3' }}>Units Left (100 Base)</TableCell>
+                      <TableCell align="center" sx={{ fontWeight: 800, bgcolor: '#FAF0F3' }}>Shop Status</TableCell>
+                      <TableCell align="center" sx={{ fontWeight: 800, bgcolor: '#FAF0F3', minWidth: 190 }}>Dropdown Action</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {filteredProducts.map((p) => (
-                      <TableRow key={p.id} hover>
-                        <TableCell>
-                          <Stack direction="row" spacing={1.5} alignItems="center">
-                            <Box
-                              component="img"
-                              src={p.image}
-                              alt={p.name}
-                              sx={{ width: 48, height: 48, borderRadius: '8px', objectFit: 'cover', border: '1px solid #FCE4EC' }}
+                    {filteredProducts.map((p) => {
+                      const isActiveInShop = p.inStock && p.quantity > 0;
+                      return (
+                        <TableRow key={p.id} hover>
+                          <TableCell>
+                            <Stack direction="row" spacing={1.5} alignItems="center">
+                              <Box
+                                component="img"
+                                src={p.image}
+                                alt={p.name}
+                                sx={{ width: 48, height: 48, borderRadius: '8px', objectFit: 'cover', border: '1px solid #FCE4EC' }}
+                              />
+                              <Box>
+                                <Typography variant="subtitle2" fontWeight={800} sx={{ maxWidth: 240 }}>
+                                  {p.name}
+                                </Typography>
+                                {p.badge && (
+                                  <Chip label={p.badge} size="small" sx={{ height: 18, fontSize: '0.62rem', bgcolor: '#EC407A', color: '#ffffff', fontWeight: 800 }} />
+                                )}
+                              </Box>
+                            </Stack>
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="body2" fontWeight={600}>
+                              {p.categoryName}
+                            </Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="caption" sx={{ fontFamily: 'monospace', fontWeight: 700, bgcolor: '#F0F0F0', px: 1, py: 0.3, borderRadius: 1 }}>
+                              {p.sku}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="right">
+                            <Typography variant="subtitle2" fontWeight={900} color="#EC407A">
+                              {CURRENCY_SYMBOL}{p.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                            </Typography>
+                          </TableCell>
+
+                          {/* 3. Quantities Left Column with Stepper Controls */}
+                          <TableCell align="center">
+                            <Stack direction="row" spacing={0.8} alignItems="center" justifyContent="center">
+                              <IconButton
+                                size="small"
+                                onClick={() => handleQuantityChange(p.id, -1)}
+                                disabled={p.quantity <= 0}
+                                sx={{ border: '1px solid #E0E0E0', p: 0.3 }}
+                              >
+                                <RemoveIcon sx={{ fontSize: 14, color: '#c62828' }} />
+                              </IconButton>
+                              <Chip
+                                label={`${p.quantity} Units`}
+                                size="small"
+                                sx={{
+                                  fontWeight: 900,
+                                  minWidth: 72,
+                                  bgcolor: p.quantity > 20 ? '#e8f5e9' : p.quantity > 0 ? '#fff3e0' : '#ffebee',
+                                  color: p.quantity > 20 ? '#2e7d32' : p.quantity > 0 ? '#e65100' : '#c62828',
+                                }}
+                              />
+                              <IconButton
+                                size="small"
+                                onClick={() => handleQuantityChange(p.id, 1)}
+                                sx={{ border: '1px solid #E0E0E0', p: 0.3 }}
+                              >
+                                <AddIcon sx={{ fontSize: 14, color: '#2e7d32' }} />
+                              </IconButton>
+                            </Stack>
+                          </TableCell>
+
+                          {/* Shop Status Badge */}
+                          <TableCell align="center">
+                            <Chip
+                              label={isActiveInShop ? 'Active in Shop' : 'Out of Stock (Hidden)'}
+                              size="small"
+                              sx={{
+                                fontWeight: 800,
+                                bgcolor: isActiveInShop ? '#e8f5e9' : '#ffebee',
+                                color: isActiveInShop ? '#2e7d32' : '#c62828',
+                              }}
                             />
-                            <Box>
-                              <Typography variant="subtitle2" fontWeight={800} sx={{ maxWidth: 260 }}>
-                                {p.name}
-                              </Typography>
-                              {p.badge && (
-                                <Chip label={p.badge} size="small" sx={{ height: 18, fontSize: '0.62rem', bgcolor: '#EC407A', color: '#ffffff', fontWeight: 800 }} />
-                              )}
-                            </Box>
-                          </Stack>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="body2" fontWeight={600}>
-                            {p.categoryName}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="caption" sx={{ fontFamily: 'monospace', fontWeight: 700, bgcolor: '#F0F0F0', px: 1, py: 0.3, borderRadius: 1 }}>
-                            {p.sku}
-                          </Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Typography variant="subtitle2" fontWeight={900} color="#EC407A">
-                            {CURRENCY_SYMBOL}{p.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                          </Typography>
-                        </TableCell>
-                        <TableCell align="center">
-                          <Chip
-                            label={p.inStock ? 'Active in Shop' : 'Removed (Out of Stock)'}
-                            size="small"
-                            sx={{
-                              fontWeight: 800,
-                              bgcolor: p.inStock ? '#e8f5e9' : '#ffebee',
-                              color: p.inStock ? '#2e7d32' : '#c62828',
-                            }}
-                          />
-                        </TableCell>
-                        <TableCell align="center">
-                          <Button
-                            size="small"
-                            variant={p.inStock ? 'outlined' : 'contained'}
-                            onClick={() => handleToggleStock(p.id)}
-                            sx={{
-                              borderColor: p.inStock ? '#c62828' : '#2e7d32',
-                              bgcolor: p.inStock ? 'transparent' : '#2e7d32',
-                              color: p.inStock ? '#c62828' : '#ffffff',
-                              '&:hover': {
-                                bgcolor: p.inStock ? '#ffebee' : '#1b5e20',
-                              },
-                              borderRadius: '16px',
-                              textTransform: 'none',
-                              fontWeight: 800,
-                              fontSize: '0.75rem',
-                              px: 1.5,
-                            }}
-                          >
-                            {p.inStock ? 'Remove from Shop' : 'Restore to Shop'}
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                          </TableCell>
+
+                          {/* 2. Safe Dropdown Action (Zero Misclicks) */}
+                          <TableCell align="center">
+                            <FormControl size="small" sx={{ minWidth: 175 }}>
+                              <Select
+                                value=""
+                                displayEmpty
+                                renderValue={() => (
+                                  <Typography variant="caption" sx={{ fontWeight: 800, color: '#333333' }}>
+                                    ⚙️ Select Action...
+                                  </Typography>
+                                )}
+                                onChange={(e) => handleProductActionDropdown(p.id, e.target.value)}
+                                sx={{
+                                  borderRadius: '16px',
+                                  fontSize: '0.78rem',
+                                  height: 32,
+                                  bgcolor: '#ffffff',
+                                  border: '1.5px solid #EC407A',
+                                  '& .MuiSelect-select': { py: 0.4, px: 1.2 },
+                                }}
+                              >
+                                <MenuItem value="active" sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#2e7d32' }}>
+                                  ✅ Set Active (In Shop)
+                                </MenuItem>
+                                <MenuItem value="remove" sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#c62828' }}>
+                                  🚫 Remove from Shop
+                                </MenuItem>
+                                <Divider sx={{ my: 0.5 }} />
+                                <MenuItem value="set100" sx={{ fontSize: '0.8rem', fontWeight: 700 }}>
+                                  📦 Reset to 100 Units
+                                </MenuItem>
+                                <MenuItem value="add50" sx={{ fontSize: '0.8rem', fontWeight: 700 }}>
+                                  ➕ Restock (+50 Units)
+                                </MenuItem>
+                                <MenuItem value="zero" sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#d32f2f' }}>
+                                  ❌ Set to 0 Units (Sold Out)
+                                </MenuItem>
+                              </Select>
+                            </FormControl>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -465,7 +603,7 @@ export default function AdminDashboard({ open, onClose }) {
           )}
 
           {/* ══════════════════════════════════════════════════════════
-              TAB 1: ORDERS & SHIPMENTS
+              TAB 1: ORDERS & SHIPMENTS WITH SAFE DROPDOWN
           ══════════════════════════════════════════════════════════ */}
           {currentTab === 1 && (
             <Card elevation={1} sx={{ borderRadius: '16px', border: '1px solid #E0E0E0' }}>
@@ -475,7 +613,7 @@ export default function AdminDashboard({ open, onClose }) {
                     Active Orders & International Shipments ({orderList.length})
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
-                    Real-time order registry synced with checkout transactions
+                    Change order statuses using the dropdown menu to prevent accidental misclicks.
                   </Typography>
                 </Box>
                 <Chip
@@ -492,8 +630,8 @@ export default function AdminDashboard({ open, onClose }) {
                       <TableCell sx={{ fontWeight: 800 }}>Destination Hub</TableCell>
                       <TableCell sx={{ fontWeight: 800 }}>Items Ordered</TableCell>
                       <TableCell align="right" sx={{ fontWeight: 800 }}>Total Amount</TableCell>
-                      <TableCell align="center" sx={{ fontWeight: 800 }}>Status</TableCell>
-                      <TableCell align="center" sx={{ fontWeight: 800 }}>Action</TableCell>
+                      <TableCell align="center" sx={{ fontWeight: 800 }}>Current Status</TableCell>
+                      <TableCell align="center" sx={{ fontWeight: 800, minWidth: 180 }}>Status Dropdown</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -509,7 +647,7 @@ export default function AdminDashboard({ open, onClose }) {
                         </TableCell>
                         <TableCell>
                           <Typography variant="body2" fontWeight={700}>
-                            {ord.customer}
+                            {ord.customer || 'Guest Customer'}
                           </Typography>
                         </TableCell>
                         <TableCell>
@@ -536,30 +674,40 @@ export default function AdminDashboard({ open, onClose }) {
                               bgcolor:
                                 ord.status === 'Delivered' ? '#e8f5e9' :
                                 ord.status === 'In Transit' ? '#e3f2fd' :
-                                ord.status === 'Shipped from Tokyo' ? '#fff3e0' : '#f3e5f5',
+                                ord.status === 'Shipped from Tokyo' ? '#fff3e0' :
+                                ord.status === 'Cancelled' ? '#ffebee' : '#f3e5f5',
                               color:
                                 ord.status === 'Delivered' ? '#2e7d32' :
                                 ord.status === 'In Transit' ? '#1565c0' :
-                                ord.status === 'Shipped from Tokyo' ? '#e65100' : '#7b1fa2',
+                                ord.status === 'Shipped from Tokyo' ? '#e65100' :
+                                ord.status === 'Cancelled' ? '#c62828' : '#7b1fa2',
                             }}
                           />
                         </TableCell>
+
+                        {/* 2. Order Status Select Dropdown (Prevents Misclicks) */}
                         <TableCell align="center">
-                          <Button
-                            size="small"
-                            variant="outlined"
-                            onClick={() => handleNextOrderStatus(ord.id)}
-                            sx={{
-                              borderColor: '#EC407A',
-                              color: '#EC407A',
-                              borderRadius: '16px',
-                              textTransform: 'none',
-                              fontSize: '0.72rem',
-                              fontWeight: 700,
-                            }}
-                          >
-                            Advance Status
-                          </Button>
+                          <FormControl size="small" sx={{ minWidth: 165 }}>
+                            <Select
+                              value={ord.status}
+                              onChange={(e) => handleUpdateOrderStatus(ord.id, e.target.value)}
+                              sx={{
+                                fontSize: '0.8rem',
+                                fontWeight: 700,
+                                borderRadius: '16px',
+                                height: 32,
+                                bgcolor: '#ffffff',
+                                border: '1.5px solid #EC407A',
+                                '& .MuiSelect-select': { py: 0.4, px: 1.2 },
+                              }}
+                            >
+                              <MenuItem value="Processing" sx={{ fontSize: '0.8rem', fontWeight: 600 }}>Processing</MenuItem>
+                              <MenuItem value="Shipped from Tokyo" sx={{ fontSize: '0.8rem', fontWeight: 600 }}>Shipped from Tokyo</MenuItem>
+                              <MenuItem value="In Transit" sx={{ fontSize: '0.8rem', fontWeight: 600 }}>In Transit</MenuItem>
+                              <MenuItem value="Delivered" sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#2e7d32' }}>Delivered</MenuItem>
+                              <MenuItem value="Cancelled" sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#c62828' }}>Cancelled</MenuItem>
+                            </Select>
+                          </FormControl>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -570,7 +718,7 @@ export default function AdminDashboard({ open, onClose }) {
           )}
 
           {/* ══════════════════════════════════════════════════════════
-              TAB 2: CUSTOMER SERVICE QUEUE
+              TAB 2: CUSTOMER SERVICE QUEUE WITH SAFE DROPDOWN
           ══════════════════════════════════════════════════════════ */}
           {currentTab === 2 && (
             <Card elevation={1} sx={{ borderRadius: '16px', border: '1px solid #E0E0E0' }}>
@@ -580,7 +728,7 @@ export default function AdminDashboard({ open, onClose }) {
                     Customer Service Problem Reports ({ticketList.length})
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
-                    Direct message inquiries and support tickets filed via Customer Service Help Desk
+                    Select ticket resolution status directly from the dropdown.
                   </Typography>
                 </Box>
                 <Chip
@@ -597,8 +745,8 @@ export default function AdminDashboard({ open, onClose }) {
                       <TableCell sx={{ fontWeight: 800 }}>Category</TableCell>
                       <TableCell sx={{ fontWeight: 800 }}>Problem Details</TableCell>
                       <TableCell align="center" sx={{ fontWeight: 800 }}>Priority</TableCell>
-                      <TableCell align="center" sx={{ fontWeight: 800 }}>Status</TableCell>
-                      <TableCell align="center" sx={{ fontWeight: 800 }}>Resolve</TableCell>
+                      <TableCell align="center" sx={{ fontWeight: 800 }}>Current Status</TableCell>
+                      <TableCell align="center" sx={{ fontWeight: 800, minWidth: 165 }}>Status Dropdown</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -626,7 +774,7 @@ export default function AdminDashboard({ open, onClose }) {
                           </Typography>
                         </TableCell>
                         <TableCell>
-                          <Typography variant="body2" sx={{ maxWidth: 300, color: '#555555' }}>
+                          <Typography variant="body2" sx={{ maxWidth: 280, color: '#555555' }}>
                             "{t.message}"
                           </Typography>
                         </TableCell>
@@ -647,28 +795,34 @@ export default function AdminDashboard({ open, onClose }) {
                             size="small"
                             sx={{
                               fontWeight: 800,
-                              bgcolor: t.status === 'Resolved' ? '#e8f5e9' : '#fff8e1',
-                              color: t.status === 'Resolved' ? '#2e7d32' : '#f57f17',
+                              bgcolor: t.status === 'Resolved' ? '#e8f5e9' : t.status === 'Closed' ? '#f5f5f5' : '#fff8e1',
+                              color: t.status === 'Resolved' ? '#2e7d32' : t.status === 'Closed' ? '#757575' : '#f57f17',
                             }}
                           />
                         </TableCell>
+
+                        {/* Ticket Status Select Dropdown */}
                         <TableCell align="center">
-                          <Button
-                            size="small"
-                            variant={t.status === 'Resolved' ? 'outlined' : 'contained'}
-                            onClick={() => handleResolveTicket(t.id)}
-                            sx={{
-                              bgcolor: t.status === 'Resolved' ? 'transparent' : '#4caf50',
-                              '&:hover': { bgcolor: t.status === 'Resolved' ? '#f5f5f5' : '#388e3c' },
-                              color: t.status === 'Resolved' ? '#757575' : '#ffffff',
-                              borderRadius: '16px',
-                              textTransform: 'none',
-                              fontSize: '0.72rem',
-                              fontWeight: 800,
-                            }}
-                          >
-                            {t.status === 'Resolved' ? 'Reopen' : 'Mark Resolved'}
-                          </Button>
+                          <FormControl size="small" sx={{ minWidth: 150 }}>
+                            <Select
+                              value={t.status}
+                              onChange={(e) => handleUpdateTicketStatus(t.id, e.target.value)}
+                              sx={{
+                                fontSize: '0.8rem',
+                                fontWeight: 700,
+                                borderRadius: '16px',
+                                height: 32,
+                                bgcolor: '#ffffff',
+                                border: '1.5px solid #EC407A',
+                                '& .MuiSelect-select': { py: 0.4, px: 1.2 },
+                              }}
+                            >
+                              <MenuItem value="Pending Review" sx={{ fontSize: '0.8rem', fontWeight: 600 }}>Pending Review</MenuItem>
+                              <MenuItem value="In Progress" sx={{ fontSize: '0.8rem', fontWeight: 600 }}>In Progress</MenuItem>
+                              <MenuItem value="Resolved" sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#2e7d32' }}>Resolved</MenuItem>
+                              <MenuItem value="Closed" sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#757575' }}>Closed</MenuItem>
+                            </Select>
+                          </FormControl>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -679,7 +833,7 @@ export default function AdminDashboard({ open, onClose }) {
           )}
 
           {/* ══════════════════════════════════════════════════════════
-              TAB 3: STORE & SYSTEM SETTINGS (All Dynamically Bound)
+              TAB 3: STORE & SYSTEM SETTINGS
           ══════════════════════════════════════════════════════════ */}
           {currentTab === 3 && (
             <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>

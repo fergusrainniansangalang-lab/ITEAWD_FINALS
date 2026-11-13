@@ -91,9 +91,23 @@ export default function ProductCard({ product }) {
           </Typography>
         </Stack>
 
-        <Typography variant="h6" sx={{ fontWeight: 900, color: COLOR_PRIMARY_DARK, fontSize: '1.15rem', mt: 1 }}>
-          {CURRENCY_SYMBOL}{product.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
-        </Typography>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 1 }}>
+          <Typography variant="h6" sx={{ fontWeight: 900, color: COLOR_PRIMARY_DARK, fontSize: '1.15rem' }}>
+            {CURRENCY_SYMBOL}{product.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+          </Typography>
+          <Chip
+            label={`${product.quantity ?? 100} in stock`}
+            size="small"
+            sx={{
+              height: 20,
+              fontSize: '0.68rem',
+              fontWeight: 800,
+              bgcolor: (product.quantity ?? 100) > 20 ? 'rgba(46, 125, 50, 0.12)' : (product.quantity ?? 100) > 0 ? 'rgba(237, 108, 2, 0.12)' : 'rgba(211, 47, 47, 0.12)',
+              color: (product.quantity ?? 100) > 20 ? '#2e7d32' : (product.quantity ?? 100) > 0 ? '#e65100' : '#d32f2f',
+              borderRadius: '6px',
+            }}
+          />
+        </Stack>
       </CardContent>
 
       <CardActions sx={{ p: 2, pt: 1 }}>
@@ -101,13 +115,14 @@ export default function ProductCard({ product }) {
           fullWidth
           variant="contained"
           size="small"
+          disabled={(product.quantity ?? 100) <= 0}
           startIcon={<ShoppingCartIcon fontSize="small" />}
           onClick={(e) => {
             e.stopPropagation();
             addToCart(product, 1);
           }}
           sx={{
-            bgcolor: COLOR_PRIMARY_DARK,
+            bgcolor: (product.quantity ?? 100) <= 0 ? '#e0e0e0' : COLOR_PRIMARY_DARK,
             '&:hover': { bgcolor: '#c2185b' },
             borderRadius: '20px',
             py: 0.8,
@@ -116,7 +131,7 @@ export default function ProductCard({ product }) {
             fontSize: '0.85rem',
           }}
         >
-          Add to Cart
+          {(product.quantity ?? 100) <= 0 ? 'Sold Out' : 'Add to Cart'}
         </Button>
       </CardActions>
     </Card>

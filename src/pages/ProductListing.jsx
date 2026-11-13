@@ -371,15 +371,29 @@ export default function ProductListing() {
   /* ── Filtering Logic ── */
   const filtered = useMemo(() => {
     let list = products.map((p) => {
+      let inStock = true;
+      let quantity = 100;
       try {
         const stockMap = JSON.parse(localStorage.getItem(LS_STOCK_KEY) || '{}');
-        if (stockMap[p.id] !== undefined) return { ...p, inStock: stockMap[p.id] };
+        const itemStock = stockMap[p.id];
+        if (itemStock !== undefined) {
+          if (typeof itemStock === 'object') {
+            inStock = itemStock.inStock ?? (itemStock.quantity > 0);
+            quantity = itemStock.quantity ?? 100;
+          } else if (typeof itemStock === 'boolean') {
+            inStock = itemStock;
+            quantity = itemStock ? 100 : 0;
+          } else if (typeof itemStock === 'number') {
+            quantity = itemStock;
+            inStock = itemStock > 0;
+          }
+        }
       } catch (_) {}
-      return p;
+      return { ...p, inStock: inStock && quantity > 0, quantity };
     });
 
-    // Remove Out of Stock items from the customer shop
-    list = list.filter((p) => p.inStock !== false);
+    // Remove Out of Stock items (or 0 quantity) from the customer shop
+    list = list.filter((p) => p.inStock !== false && p.quantity > 0);
 
     // Filter by category
     if (selectedCategories.length > 0) {

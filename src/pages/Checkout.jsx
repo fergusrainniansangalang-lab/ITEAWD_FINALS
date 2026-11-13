@@ -24,6 +24,7 @@ import {
   CURRENCY_SYMBOL,
   COLOR_PRIMARY_DARK,
   LS_ORDERS_KEY,
+  LS_STOCK_KEY,
   ORDER_PREFIX,
 } from '../config';
 
@@ -94,19 +95,40 @@ export default function Checkout() {
 
   const handlePlaceOrder = () => {
     const orderId = `${ORDER_PREFIX}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const customerFullName = `${ship.firstName || ''} ${ship.lastName || ''}`.trim() || 'Guest Customer';
+    const customerDestination = `${ship.city || 'Metro Manila'}${ship.province ? `, ${ship.province}` : ''}, Philippines`;
+
     const newOrder = {
       id: orderId,
-      customer: `${shipping.firstName} ${shipping.lastName}`.trim() || 'Guest Customer',
-      destination: `${shipping.city || 'Metro Manila'}, Philippines`,
+      customer: customerFullName,
+      destination: customerDestination,
       items: cartItems.map((i) => i.name).slice(0, 2).join(', ') + (cartItems.length > 2 ? ` +${cartItems.length - 2} more` : ''),
       total: total,
       date: 'Just now',
       status: 'Processing',
     };
+
+    // 1. Save new order
     try {
       const existing = JSON.parse(localStorage.getItem(LS_ORDERS_KEY) || '[]');
       localStorage.setItem(LS_ORDERS_KEY, JSON.stringify([newOrder, ...existing]));
     } catch (_) {}
+
+    // 2. Deduct purchased quantities from stock
+    try {
+      const currentStockMap = JSON.parse(localStorage.getItem(LS_STOCK_KEY) || '{}');
+      cartItems.forEach((item) => {
+        const cur = currentStockMap[item.id] || { inStock: true, quantity: 100 };
+        const currentQty = typeof cur === 'object' ? (cur.quantity ?? 100) : (cur ? 100 : 0);
+        const updatedQty = Math.max(0, currentQty - (item.quantity || 1));
+        currentStockMap[item.id] = {
+          inStock: updatedQty > 0,
+          quantity: updatedQty,
+        };
+      });
+      localStorage.setItem(LS_STOCK_KEY, JSON.stringify(currentStockMap));
+    } catch (_) {}
+
     clearCart();
     navigate(paths.orderConfirmation);
   };
@@ -195,7 +217,7 @@ export default function Checkout() {
           {/* Main Checkout Form Box */}
           <Box sx={{ flex: 1, width: '100%' }}>
             <Card elevation={2} sx={{ borderRadius: '18px', border: '1px solid #FCE4EC' }}>
-              <CardContent sx={{ p: { xs: 2.5, sm: 3.5 } }}>
+              <CardContent sx={{ p: { xs: 3, sm: 4.5 }, pb: { xs: 4, sm: 5 } }}>
                 {/* Step 0 — Shipping */}
                 {step === 0 && (
                   <Box>
@@ -337,58 +359,71 @@ export default function Checkout() {
                   </Box>
                 )}
 
-                {/* Navigation Buttons */}
-                <Stack direction="row" justifyContent="space-between" mt={4}>
-                  <Button
-                    variant="outlined"
-                    onClick={() => (step === 0 ? navigate(paths.cart) : setStep((s) => s - 1))}
-                    sx={{
-                      borderColor: COLOR_PRIMARY_DARK,
-                      color: COLOR_PRIMARY_DARK,
-                      borderRadius: '25px',
-                      textTransform: 'none',
-                      fontWeight: 700,
-                      px: 3,
-                    }}
-                  >
-                    {step === 0 ? '← Back to Cart' : 'Back'}
-                  </Button>
+                {/* Generous Divider to ensure ample space between form fields and buttons */}
+                <Divider sx={{ mt: 5, mb: 3.5, borderColor: '#FCE4EC' }} />
 
-                  {step < 2 ? (
+                {/* Navigation Buttons with Dedicated Top Spacing */}
+                <Box>
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    spacing={2}
+                  >
                     <Button
-                      variant="contained"
-                      onClick={handleNext}
+                      variant="outlined"
+                      onClick={() => (step === 0 ? navigate(paths.cart) : setStep((s) => s - 1))}
                       sx={{
-                        bgcolor: COLOR_PRIMARY_DARK,
-                        '&:hover': { bgcolor: '#c2185b' },
+                        borderColor: COLOR_PRIMARY_DARK,
+                        color: COLOR_PRIMARY_DARK,
                         borderRadius: '25px',
                         textTransform: 'none',
-                        fontWeight: 800,
-                        px: 4,
+                        fontWeight: 700,
+                        px: { xs: 2.5, sm: 3.5 },
+                        py: 1,
                       }}
                     >
-                      Continue
+                      {step === 0 ? '← Back to Cart' : 'Back'}
                     </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      onClick={handlePlaceOrder}
-                      sx={{
-                        bgcolor: '#2e7d32',
-                        '&:hover': { bgcolor: '#1b5e20' },
-                        borderRadius: '25px',
-                        textTransform: 'none',
-                        fontWeight: 800,
-                        px: 4,
-                        py: 1.2,
-                        fontSize: '1rem',
-                        boxShadow: '0 4px 14px rgba(46, 125, 50, 0.3)',
-                      }}
-                    >
-                      Place Order ({CURRENCY_SYMBOL}{total.toLocaleString(undefined, { minimumFractionDigits: 2 })})
-                    </Button>
-                  )}
-                </Stack>
+
+                    {step < 2 ? (
+                      <Button
+                        variant="contained"
+                        onClick={handleNext}
+                        sx={{
+                          bgcolor: COLOR_PRIMARY_DARK,
+                          '&:hover': { bgcolor: '#c2185b' },
+                          borderRadius: '25px',
+                          textTransform: 'none',
+                          fontWeight: 800,
+                          px: { xs: 3.5, sm: 4.5 },
+                          py: 1,
+                          boxShadow: '0 4px 14px rgba(236, 64, 122, 0.3)',
+                        }}
+                      >
+                        Continue
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        onClick={handlePlaceOrder}
+                        sx={{
+                          bgcolor: '#2e7d32',
+                          '&:hover': { bgcolor: '#1b5e20' },
+                          borderRadius: '25px',
+                          textTransform: 'none',
+                          fontWeight: 800,
+                          px: { xs: 3.5, sm: 4.5 },
+                          py: 1.2,
+                          fontSize: '1rem',
+                          boxShadow: '0 4px 14px rgba(46, 125, 50, 0.3)',
+                        }}
+                      >
+                        Place Order ({CURRENCY_SYMBOL}{total.toLocaleString(undefined, { minimumFractionDigits: 2 })})
+                      </Button>
+                    )}
+                  </Stack>
+                </Box>
               </CardContent>
             </Card>
           </Box>
