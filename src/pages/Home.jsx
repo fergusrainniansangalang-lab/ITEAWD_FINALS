@@ -45,6 +45,7 @@ import {
   COLOR_PRIMARY,
   COLOR_PRIMARY_DARK,
   COLOR_PRIMARY_LIGHT,
+  LS_STOCK_KEY,
 } from '../config';
 
 /* ── Category definitions matching screenshot icons & labels ── */
@@ -63,8 +64,17 @@ export default function Home() {
   const { addToCart } = useCart();
   const [slide, setSlide] = useState(0);
 
-  // Take the 3 designated featured products to replicate the reference design
-  const featured = products.filter(p => p.isFeatured).slice(0, 3);
+  // Take designated featured products that are active in stock
+  const featured = products
+    .map((p) => {
+      try {
+        const stockMap = JSON.parse(localStorage.getItem(LS_STOCK_KEY) || '{}');
+        if (stockMap[p.id] !== undefined) return { ...p, inStock: stockMap[p.id] };
+      } catch (_) {}
+      return p;
+    })
+    .filter((p) => p.isFeatured && p.inStock !== false)
+    .slice(0, 3);
 
   /* Auto-advance carousel */
   useEffect(() => {

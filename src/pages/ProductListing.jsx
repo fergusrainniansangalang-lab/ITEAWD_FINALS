@@ -378,6 +378,9 @@ export default function ProductListing() {
       return p;
     });
 
+    // Remove Out of Stock items from the customer shop
+    list = list.filter((p) => p.inStock !== false);
+
     // Filter by category
     if (selectedCategories.length > 0) {
       list = list.filter((p) =>

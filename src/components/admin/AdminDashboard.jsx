@@ -157,7 +157,7 @@ export default function AdminDashboard({ open, onClose }) {
       const next = prev.map((p) => {
         if (p.id === productId) {
           const updated = !p.inStock;
-          setSnackMessage(`${p.name} is now ${updated ? 'IN STOCK' : 'OUT OF STOCK'}`);
+          setSnackMessage(`${p.name} has been ${updated ? 'restored to the shop' : 'removed from the shop (Out of Stock)'}`);
           setSnackOpen(true);
           return { ...p, inStock: updated };
         }
@@ -425,7 +425,7 @@ export default function AdminDashboard({ open, onClose }) {
                         </TableCell>
                         <TableCell align="center">
                           <Chip
-                            label={p.inStock ? 'In Stock' : 'Out of Stock'}
+                            label={p.inStock ? 'Active in Shop' : 'Removed (Out of Stock)'}
                             size="small"
                             sx={{
                               fontWeight: 800,
@@ -437,19 +437,23 @@ export default function AdminDashboard({ open, onClose }) {
                         <TableCell align="center">
                           <Button
                             size="small"
-                            variant="outlined"
+                            variant={p.inStock ? 'outlined' : 'contained'}
                             onClick={() => handleToggleStock(p.id)}
                             sx={{
                               borderColor: p.inStock ? '#c62828' : '#2e7d32',
-                              color: p.inStock ? '#c62828' : '#2e7d32',
+                              bgcolor: p.inStock ? 'transparent' : '#2e7d32',
+                              color: p.inStock ? '#c62828' : '#ffffff',
+                              '&:hover': {
+                                bgcolor: p.inStock ? '#ffebee' : '#1b5e20',
+                              },
                               borderRadius: '16px',
                               textTransform: 'none',
-                              fontWeight: 700,
+                              fontWeight: 800,
                               fontSize: '0.75rem',
                               px: 1.5,
                             }}
                           >
-                            {p.inStock ? 'Mark Out of Stock' : 'Restock'}
+                            {p.inStock ? 'Remove from Shop' : 'Restore to Shop'}
                           </Button>
                         </TableCell>
                       </TableRow>
