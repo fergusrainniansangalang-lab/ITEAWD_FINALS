@@ -40,6 +40,7 @@ export const ADMIN_PASSWORD = 'JAPANISLIFE';
 /* ── LocalStorage keys ── */
 export const LS_CART_KEY = 'raijoukaku_cart';
 export const LS_USER_KEY = 'raijoukaku_user';
+export const LS_ACCOUNTS_KEY = 'raijoukaku_accounts';
 export const LS_ORDERS_KEY = 'raijoukaku_orders';
 export const LS_TICKETS_KEY = 'raijoukaku_tickets';
 export const LS_STOCK_KEY = 'raijoukaku_stock';

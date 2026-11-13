@@ -22,7 +22,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Box, Typography, Card, CardMedia, CardContent, CardActions,
-  Button, IconButton, Stack, Chip, Rating, Container
+  Button, IconButton, Stack, Chip, Rating, Container, Paper, Avatar
 } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -34,8 +34,10 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import SportsBasketballOutlinedIcon from '@mui/icons-material/SportsBasketballOutlined';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from 'context/CartContext';
+import { useAuth } from 'context/AuthContext';
 import { products } from 'data/products';
 import paths from 'routes/paths';
 import {
@@ -63,6 +65,7 @@ const CATEGORIES = [
 export default function Home() {
   const navigate = useNavigate();
   const { addToCart, getItemInCartCount, getRemainingPurchasable } = useCart();
+  const { user, isLoggedIn } = useAuth();
   const [slide, setSlide] = useState(0);
 
   // Take designated featured products that have active stock in admin
@@ -89,6 +92,91 @@ export default function Home() {
           1. HERO CAROUSEL (Rounded card with margins, matching photo)
       ═════════════════════════════════════════════════════════ */}
       <Container maxWidth="lg" sx={{ mt: 1, mb: 4 }}>
+        {/* Personalized Member Welcome Card (Displayed upon login) */}
+        {isLoggedIn && (
+          <Paper
+            elevation={0}
+            sx={{
+              background: 'linear-gradient(135deg, #FFF0F5 0%, #FFFFFF 55%, #FCE4EC 100%)',
+              borderRadius: { xs: '14px', md: '18px' },
+              border: '1.5px solid #F48FB1',
+              p: { xs: 2, sm: 2.5 },
+              mb: 3,
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              alignItems: { xs: 'flex-start', sm: 'center' },
+              justifyContent: 'space-between',
+              gap: 2,
+              boxShadow: '0 4px 20px rgba(236, 64, 122, 0.1)',
+            }}
+          >
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Avatar
+                sx={{
+                  bgcolor: COLOR_PRIMARY_DARK,
+                  width: { xs: 46, sm: 54 },
+                  height: { xs: 46, sm: 54 },
+                  fontWeight: 900,
+                  fontSize: '1.35rem',
+                  boxShadow: '0 4px 14px rgba(236, 64, 122, 0.35)',
+                }}
+              >
+                {user?.name ? user.name.charAt(0).toUpperCase() : '客'}
+              </Avatar>
+              <Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontWeight: 900,
+                      color: '#212121',
+                      fontSize: { xs: '1.1rem', sm: '1.25rem' },
+                    }}
+                  >
+                    Kon'nichiwa, {user?.name || 'Customer'}! (こんにちは)
+                  </Typography>
+                  <Chip
+                    icon={<LocalFloristIcon sx={{ fontSize: '14px !important', color: '#EC407A !important' }} />}
+                    label="Active RaiJouKaKu Member"
+                    size="small"
+                    sx={{
+                      bgcolor: 'rgba(236, 64, 122, 0.12)',
+                      color: COLOR_PRIMARY_DARK,
+                      fontWeight: 800,
+                      fontSize: '0.72rem',
+                      height: 22,
+                    }}
+                  />
+                </Box>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.3, fontSize: '0.88rem' }}>
+                  Welcome to your personalized Tokyo storefront. Authentic imports and live stock are ready for you.
+                </Typography>
+              </Box>
+            </Stack>
+
+            <Button
+              variant="contained"
+              size="small"
+              onClick={() => navigate(paths.products)}
+              sx={{
+                bgcolor: COLOR_PRIMARY_DARK,
+                '&:hover': { bgcolor: '#c2185b' },
+                borderRadius: '20px',
+                px: 3,
+                py: 0.9,
+                fontWeight: 800,
+                textTransform: 'none',
+                fontSize: '0.85rem',
+                whiteSpace: 'nowrap',
+                alignSelf: { xs: 'stretch', sm: 'center' },
+                boxShadow: '0 3px 10px rgba(236, 64, 122, 0.25)',
+              }}
+            >
+              Shop 35 Tokyo Products
+            </Button>
+          </Paper>
+        )}
+
         <Box
           sx={{
             position: 'relative',

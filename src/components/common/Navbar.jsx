@@ -26,6 +26,7 @@ import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
 import CloseIcon from '@mui/icons-material/Close';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from 'context/CartContext';
+import { useAuth } from 'context/AuthContext';
 import paths from 'routes/paths';
 import { SITE_NAME, SITE_NAME_JP } from '../../config';
 
@@ -42,6 +43,7 @@ export default function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { cartCount } = useCart();
+  const { user, isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleSearch = (e) => {
@@ -187,37 +189,79 @@ export default function Navbar() {
             {/* 3. Right: Auth Links & Mobile Menu Button */}
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
               {!isMobile ? (
-                <Stack direction="row" spacing={1.5} alignItems="center">
-                  <Button
-                    component={Link}
-                    to={paths.login}
-                    sx={{
-                      color: '#ffffff',
-                      fontWeight: 700,
-                      fontSize: '0.88rem',
-                      letterSpacing: '1px',
-                      '&:hover': { bgcolor: 'rgba(255,255,255,0.2)' },
-                    }}
-                  >
-                    LOGIN
-                  </Button>
-                  <Typography sx={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.9rem', fontWeight: 300 }}>
-                    |
-                  </Typography>
-                  <Button
-                    component={Link}
-                    to={paths.login}
-                    sx={{
-                      color: '#ffffff',
-                      fontWeight: 700,
-                      fontSize: '0.88rem',
-                      letterSpacing: '1px',
-                      '&:hover': { bgcolor: 'rgba(255,255,255,0.2)' },
-                    }}
-                  >
-                    REGISTER
-                  </Button>
-                </Stack>
+                isLoggedIn ? (
+                  <Stack direction="row" spacing={1.5} alignItems="center">
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 0.8,
+                        bgcolor: 'rgba(255, 255, 255, 0.22)',
+                        backdropFilter: 'blur(4px)',
+                        px: 1.5,
+                        py: 0.5,
+                        borderRadius: '20px',
+                        border: '1px solid rgba(255, 255, 255, 0.45)',
+                      }}
+                    >
+                      <LocalFloristIcon sx={{ fontSize: 18, color: '#ffffff' }} />
+                      <Typography sx={{ color: '#ffffff', fontWeight: 800, fontSize: '0.86rem' }}>
+                        Kon'nichiwa, {user?.name || 'Customer'}!
+                      </Typography>
+                    </Box>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.9rem', fontWeight: 300 }}>
+                      |
+                    </Typography>
+                    <Button
+                      onClick={logout}
+                      sx={{
+                        color: '#ffffff',
+                        fontWeight: 700,
+                        fontSize: '0.82rem',
+                        letterSpacing: '1px',
+                        bgcolor: 'rgba(236, 64, 122, 0.35)',
+                        borderRadius: '16px',
+                        px: 1.4,
+                        py: 0.3,
+                        '&:hover': { bgcolor: 'rgba(236, 64, 122, 0.6)' },
+                      }}
+                    >
+                      LOGOUT
+                    </Button>
+                  </Stack>
+                ) : (
+                  <Stack direction="row" spacing={1.5} alignItems="center">
+                    <Button
+                      component={Link}
+                      to={paths.login}
+                      sx={{
+                        color: '#ffffff',
+                        fontWeight: 700,
+                        fontSize: '0.88rem',
+                        letterSpacing: '1px',
+                        '&:hover': { bgcolor: 'rgba(255,255,255,0.2)' },
+                      }}
+                    >
+                      LOGIN
+                    </Button>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.9rem', fontWeight: 300 }}>
+                      |
+                    </Typography>
+                    <Button
+                      component={Link}
+                      to={paths.login}
+                      sx={{
+                        color: '#ffffff',
+                        fontWeight: 700,
+                        fontSize: '0.88rem',
+                        letterSpacing: '1px',
+                        '&:hover': { bgcolor: 'rgba(255,255,255,0.2)' },
+                      }}
+                    >
+                      REGISTER
+                    </Button>
+                  </Stack>
+                )
               ) : (
                 <IconButton onClick={() => setDrawerOpen(true)} sx={{ color: '#ffffff' }}>
                   <MenuIcon fontSize="large" />
@@ -378,14 +422,38 @@ export default function Navbar() {
                 primaryTypographyProps={{ fontWeight: 700, color: '#EC407A' }}
               />
             </ListItem>
-            <ListItem
-              component={Link}
-              to={paths.login}
-              onClick={() => setDrawerOpen(false)}
-              sx={{ borderRadius: 2 }}
-            >
-              <ListItemText primary="Login / Register" primaryTypographyProps={{ fontWeight: 600 }} />
-            </ListItem>
+            {isLoggedIn ? (
+              <>
+                <ListItem sx={{ borderRadius: 2, bgcolor: '#FCE4EC', mb: 1, py: 1 }}>
+                  <LocalFloristIcon sx={{ color: '#EC407A', mr: 1, fontSize: 20 }} />
+                  <ListItemText
+                    primary={`Signed in: ${user?.name || 'Customer'}`}
+                    secondary={user?.email}
+                    primaryTypographyProps={{ fontWeight: 800, color: '#EC407A', fontSize: '0.92rem' }}
+                    secondaryTypographyProps={{ fontSize: '0.78rem' }}
+                  />
+                </ListItem>
+                <ListItem
+                  button
+                  onClick={() => {
+                    logout();
+                    setDrawerOpen(false);
+                  }}
+                  sx={{ borderRadius: 2, color: '#d32f2f', '&:hover': { bgcolor: '#ffebee' } }}
+                >
+                  <ListItemText primary="Sign Out / Logout" primaryTypographyProps={{ fontWeight: 700 }} />
+                </ListItem>
+              </>
+            ) : (
+              <ListItem
+                component={Link}
+                to={paths.login}
+                onClick={() => setDrawerOpen(false)}
+                sx={{ borderRadius: 2 }}
+              >
+                <ListItemText primary="Login / Register" primaryTypographyProps={{ fontWeight: 600 }} />
+              </ListItem>
+            )}
           </List>
         </Box>
       </Drawer>

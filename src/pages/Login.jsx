@@ -29,7 +29,7 @@ const ADMIN_SECRET = ADMIN_PASSWORD;
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, register } = useAuth();
   const [tab, setTab] = useState(0);
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState('');
@@ -75,9 +75,28 @@ export default function Login() {
       setError('Please fill in all required fields.');
       return;
     }
-    const ok = login(form.email, form.password);
-    if (ok) navigate(paths.home);
-    else setError('Invalid credentials. Please try again.');
+
+    if (tab === 1) {
+      // Register new dynamic account
+      if (!form.name.trim()) {
+        setError('Please enter your full name.');
+        return;
+      }
+      const res = register(form.name, form.email, form.password);
+      if (res.success) {
+        navigate(paths.home);
+      } else {
+        setError(res.message || 'Registration failed.');
+      }
+    } else {
+      // Sign in
+      const res = login(form.email, form.password);
+      if (res.success) {
+        navigate(paths.home);
+      } else {
+        setError(res.message || 'Invalid credentials. Please try again.');
+      }
+    }
   };
 
   return (
