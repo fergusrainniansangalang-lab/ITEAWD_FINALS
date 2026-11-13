@@ -138,8 +138,12 @@ export default function Cart() {
                         <Stack direction="row" spacing={2} alignItems="center">
                           <Box
                             component="img"
-                            src={item.image}
+                            src={item.image || '/images/placeholder.svg'}
                             alt={item.name}
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src = '/images/placeholder.svg';
+                            }}
                             sx={{
                               width: 72,
                               height: 72,

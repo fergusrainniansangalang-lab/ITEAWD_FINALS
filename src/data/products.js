@@ -157,10 +157,8 @@ export const products = [
     originalPrice: 1050.00,
     rating: 4.8,
     reviewsCount: 512,
-    image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/grocery/Ichiran Hakata Tonkotsu Ramen.jpg',
+    images: ['/images/products/grocery/Ichiran Hakata Tonkotsu Ramen.jpg'],
     description: 'Experience the world-renowned Fukuoka Hakata tonkotsu broth at home. Includes firm straight noodles and Ichiran proprietary red seasoning powder.',
     features: ['5 Full Servings per Box', 'Authentic Fukuoka Tonkotsu Base', 'Original Secret Red Pepper Seasoning', 'Ready in 3 Minutes'],
     inStock: true,
@@ -177,10 +175,8 @@ export const products = [
     originalPrice: 1500.00,
     rating: 4.9,
     reviewsCount: 378,
-    image: 'https://images.unsplash.com/photo-1582293041079-7814c2f12063?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1582293041079-7814c2f12063?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/grocery/Tokyo Banana and Pocky Crate.jpg',
+    images: ['/images/products/grocery/Tokyo Banana and Pocky Crate.jpg'],
     description: 'Curated gift box with 15 limited edition Japanese treats: Tokyo Banana sponge cakes, Sakura Matcha KitKats, Strawberry Pocky, and salty Senbei crackers.',
     features: ['15 Assorted Authentic Japanese Snacks', 'Limited Seasonal Sakura Editions', 'Direct Import from Tokyo Confectioneries', 'Custom Decorative Gift Box'],
     inStock: true,
@@ -197,10 +193,8 @@ export const products = [
     originalPrice: 890.00,
     rating: 4.7,
     reviewsCount: 165,
-    image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/grocery/Kagoshima Wagyu Dashi Furikake.jpg',
+    images: ['/images/products/grocery/Kagoshima Wagyu Dashi Furikake.jpg'],
     description: 'Gourmet crispy rice topping infused with real freeze-dried Kagoshima A5 Wagyu beef bits, toasted sesame, and kombu seaweed umami crunch.',
     features: ['Real A5 Japanese Wagyu Beef Flakes', 'Kombu Kelp & Bonito Umami Profile', 'No Artificial Preservatives', 'Elevates Rice, Noodles & Salads'],
     inStock: true,
@@ -221,11 +215,8 @@ export const products = [
     originalPrice: 20990.00,
     rating: 4.9,
     reviewsCount: 890,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=700&q=80',
-      'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/electronics/Sony WH-1000XM5 Headphones.jpg',
+    images: ['/images/products/electronics/Sony WH-1000XM5 Headphones.jpg'],
     description: 'Engineered in Tokyo with dual processors and 8 microphones for industry-leading noise cancellation, LDAC Hi-Res Wireless, and 30-hour battery life.',
     features: ['Integrated Processor V1 + QN1', 'Auto NC Optimizer & 8 Microphones', 'Ultra-comfortable Lightweight Design', 'Speak-to-Chat & Multipoint Connection'],
     inStock: true,
@@ -242,10 +233,8 @@ export const products = [
     originalPrice: 17990.00,
     rating: 5.0,
     reviewsCount: 1120,
-    image: 'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/electronics/Nintendo Switch OLED Model.jpg',
+    images: ['/images/products/electronics/Nintendo Switch OLED Model.jpg'],
     description: 'Kyoto-crafted handheld gaming console with a vibrant 7-inch OLED screen, wide adjustable stand, enhanced audio, and 64GB internal storage.',
     features: ['7-inch Vibrant OLED Screen', 'Wide Adjustable Stand for Tabletop Mode', 'Wired LAN Port in Dock', 'Enhanced Onboard Audio'],
     inStock: true,
@@ -262,10 +251,8 @@ export const products = [
     originalPrice: 13500.00,
     rating: 4.9,
     reviewsCount: 420,
-    image: 'https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/electronics/Zojirushi Smart Rice Cooker.jpg',
+    images: ['/images/products/electronics/Zojirushi Smart Rice Cooker.jpg'],
     description: 'Made in Japan. Features advanced Neuro Fuzzy logic technology that micro-adjusts temperature and heating time for flawless Japanese rice every batch.',
     features: ['Made in Japan with Neuro Fuzzy Tech', 'Multiple Settings: White, Sushi, Porridge', 'Spherical Inner Cooking Pan & Heating', 'Keep Warm & Reheat Functions'],
     inStock: true,
@@ -282,10 +269,8 @@ export const products = [
     originalPrice: 19500.00,
     rating: 4.8,
     reviewsCount: 231,
-    image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/electronics/Audio-Technica Direct-Drive Turntable.jpg',
+    images: ['/images/products/electronics/Audio-Technica Direct-Drive Turntable.jpg'],
     description: 'Tokyo precision audio engineering. Direct-drive DC servo motor with selectable phono pre-amplifier and USB output to digitize vinyl records.',
     features: ['Direct-drive High-torque DC Motor', 'AT-VM95E Dual Magnet Cartridge', 'Built-in Switchable Phono Pre-amp', 'USB Output for Direct PC Recording'],
     inStock: true,
@@ -302,10 +287,8 @@ export const products = [
     originalPrice: 7200.00,
     rating: 4.8,
     reviewsCount: 310,
-    image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/electronics/Panasonic Nanoe Moisture Hair Dryer.jpg',
+    images: ['/images/products/electronics/Panasonic Nanoe Moisture Hair Dryer.jpg'],
     description: 'Patented Japanese Nanoe moisture technology pulls water molecules from the air, infusing 1,000x more moisture into hair while drying.',
     features: ['Nanoe Moisture Particle Generator', 'Quick-dry Nozzle for Fast Uniform Airflow', '3 Speed & 3 Temperature Modes', 'Cold-shot Button to Lock Hairstyle'],
     inStock: true,
@@ -514,10 +497,8 @@ export const products = [
     originalPrice: 6200.00,
     rating: 5.0,
     reviewsCount: 390,
-    image: 'https://images.unsplash.com/photo-1519766304817-4f37bda74a29?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1519766304817-4f37bda74a29?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/sports/Molten BG5000 Basketball.jpg',
+    images: ['/images/products/sports/Molten BG5000 Basketball.jpg'],
     description: 'Hiroshima engineered top-grain natural leather game ball. Features signature 12-panel design with enhanced sweat-absorbing pebble texture.',
     features: ['FIBA Approved Game Ball', 'Genuine Premium Japanese Leather', 'Dual-Cushion Foam Backing', 'Optimal Tactile Moisture Control'],
     inStock: true,
@@ -534,10 +515,8 @@ export const products = [
     originalPrice: 2900.00,
     rating: 4.9,
     reviewsCount: 145,
-    image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/sports/Kendo Shinai Bamboo Sword.jpg',
+    images: ['/images/products/sports/Kendo Shinai Bamboo Sword.jpg'],
     description: 'Selected Kyoto Madake 4-stave bamboo with deluxe cowhide leather fittings and Tsuba hand guard. Balanced for tournament and dojo training.',
     features: ['4-Stave Seasoned Madake Bamboo', 'Tournament Standard Size 39 (Men/Women)', 'Hand-stitched White Cowhide Fittings', 'Includes Tsuba & Rubber Dome Ring'],
     inStock: true,
@@ -554,10 +533,8 @@ export const products = [
     originalPrice: 9600.00,
     rating: 4.9,
     reviewsCount: 278,
-    image: 'https://images.unsplash.com/photo-1534158914592-062992fbe900?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1534158914592-062992fbe900?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/sports/Table Tennis Racket.jpg',
+    images: ['/images/products/sports/Table Tennis Racket.jpg'],
     description: 'Manufactured in Saitama, Japan. The world championship standard blade combining carbon speed with ALC softness for explosive spin and touch.',
     features: ['5-Ply Wood + 2-Ply Arylate Carbon', 'Dignics 05 Professional Rubber', 'FL Concave Ergonomic Handle', 'Official ITTF Match Stamp'],
     inStock: true,
@@ -574,10 +551,8 @@ export const products = [
     originalPrice: 5800.00,
     rating: 4.8,
     reviewsCount: 182,
-    image: 'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/sports/Badminton Racket Set.jpg',
+    images: ['/images/products/sports/Badminton Racket Set.jpg'],
     description: 'High-modulus carbon frame with Torayca M40J Japanese graphite. Delivers pinpoint smash accuracy and agile defense responses.',
     features: ['Torayca M40J Japanese Carbon Fiber', 'Even Balance 4U Weight (83g)', 'Aero Groove Frame Drag Reduction', 'Includes Thermal Carry Bag & Shuttles'],
     inStock: true,
@@ -594,10 +569,8 @@ export const products = [
     originalPrice: 4500.00,
     rating: 4.9,
     reviewsCount: 94,
-    image: 'https://images.unsplash.com/photo-1586401100295-7a8096fd231a?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1586401100295-7a8096fd231a?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/sports/Japanese Cast Iron Kettlebell.jpg',
+    images: ['/images/products/sports/Japanese Cast Iron Kettlebell.jpg'],
     description: 'Cast in Iwate Prefecture using 900-year-old Nambu iron methods. Ergonomic wide handle with unglazed matte grip for kettlebell swings and snatches.',
     features: ['Traditional Iwate Cast Iron Pour', 'Machined Flat Base for Stability', 'Smooth Non-abrasive Handle Grip', 'Rust-resistant Natural Urushi Coating'],
     inStock: true,
@@ -618,10 +591,8 @@ export const products = [
     originalPrice: 1550.00,
     rating: 4.9,
     reviewsCount: 310,
-    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/books/The Art of Washoku.jpg',
+    images: ['/images/products/books/The Art of Washoku.jpg'],
     description: 'Hardcover culinary guide to seasonal Japanese cooking, Dashi preparation, sashimi slicing knives, and UNESCO Intangible Cultural Heritage recipes.',
     features: ['Hardcover 320 Full-Color Pages', '120 Step-by-Step Authentic Recipes', 'Guide to Seasonal Ingredients & Umami', 'Foreword by Michelin 3-Star Master Chef'],
     inStock: true,
@@ -638,10 +609,8 @@ export const products = [
     originalPrice: 2200.00,
     rating: 5.0,
     reviewsCount: 940,
-    image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/books/Genki Elementary Japanese.jpg',
+    images: ['/images/products/books/Genki Elementary Japanese.jpg'],
     description: 'The premier worldwide standard for learning Japanese. Complete textbook and workbook covering Hiragana, Katakana, Kanji, grammar, and audio dialogues.',
     features: ['Complete 3rd Edition with Digital Audio App', '23 Comprehensive Cultural Dialogue Units', '317 Essential Kanji with Stroke Orders', 'Includes Full Exercise Answer Key'],
     inStock: true,
@@ -658,10 +627,8 @@ export const products = [
     originalPrice: 3100.00,
     rating: 4.9,
     reviewsCount: 167,
-    image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/books/Masterpieces of Japanese Ukiyo-e.jpg',
+    images: ['/images/products/books/Masterpieces of Japanese Ukiyo-e.jpg'],
     description: 'Deluxe slipcased art folio compiling 200 rare woodblock prints by Hokusai, Hiroshige, and Utamaro with historical essays and color commentary.',
     features: ['Large Format Coffee Table Hardcover', 'Gold Foil Stamped Cloth Slipcase', 'High-definition 1200 DPI Restorations', 'Biographies of Edo-Period Print Masters'],
     inStock: true,
@@ -678,10 +645,8 @@ export const products = [
     originalPrice: 900.00,
     rating: 4.8,
     reviewsCount: 228,
-    image: 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/books/The Book of Tea.jpg',
+    images: ['/images/products/books/The Book of Tea.jpg'],
     description: 'Timeless masterpiece exploring the aesthetic principles of Zen, Taoism, and the Japanese tea ceremony (Chado) as an art of everyday living.',
     features: ['Handcrafted Washi Paper Style Dustjacket', 'Unabridged Classic English & Japanese Text', 'Illustrations of Historical Tea Rooms', 'Compact Pocket Meditative Format'],
     inStock: true,
@@ -698,10 +663,8 @@ export const products = [
     originalPrice: 1850.00,
     rating: 4.9,
     reviewsCount: 185,
-    image: 'https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&w=700&q=80',
-    images: [
-      'https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&w=700&q=80'
-    ],
+    image: '/images/products/books/Tokyo Alleyways Hidden Yokocho.jpg',
+    images: ['/images/products/books/Tokyo Alleyways Hidden Yokocho.jpg'],
     description: 'Photographic voyage into the labyrinthine drinking alleys and Izakaya micro-bars of Shinjuku Golden Gai, Omoide Yokocho, and Yanaka.',
     features: ['240 High-Gloss Archival Color Plates', 'Bilingual English/Japanese Maps', 'Architecture Elevation Diagrams', 'Interviews with Master Bar Keepers'],
     inStock: true,

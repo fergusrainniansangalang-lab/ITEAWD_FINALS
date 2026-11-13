@@ -75,26 +75,26 @@ export const COLOR_PRIMARY_LIGHT = '#FCE4EC'; // Soft petal blush
 export const COLOR_HEADER_BG = '#F48FB1';     // Header banner pink
 export const COLOR_WHITE = '#ffffff';
 
-/* ── Hero carousel slides (Japanese themed) ── */
+/* ── Hero carousel slides (Japanese themed featuring new uploaded collections) ── */
 export const HERO_SLIDES = [
   {
-    img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1400&q=80',
-    title: 'Authentic Sapporo & Japanese Delights',
-    sub: 'Experience the pure taste of Hokkaido & Tokyo delicacies',
+    img: '/images/products/clothing/Heavy Weight Sweat Cocoon.avif',
+    title: 'Urban Japanese Streetwear & Apparel',
+    sub: 'Heavyweight hoodies, flannel shirts, beanies & authentic straight denim',
   },
   {
-    img: 'https://images.unsplash.com/photo-1528164344705-475426879c0d?auto=format&fit=crop&w=1400&q=80',
-    title: 'Traditional & Streetwear Fashion',
-    sub: 'Artisan Haori jackets, Yukata sets & premium denim',
+    img: '/images/products/shoes/Color Canvas Sneakers.avif',
+    title: 'Casual & Heritage Japanese Footwear',
+    sub: 'Canvas sneakers, faux mouton short boots & classic coin loafers',
   },
   {
-    img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1400&q=80',
-    title: 'Japanese Precision Electronics',
-    sub: 'Audio-Technica, Sony & Zojirushi high-tech innovations',
+    img: '/images/products/cleaning/Chaise longue.avif',
+    title: 'Minimalist Japanese Home & Living',
+    sub: 'Comfortable chaise longues, footstools, mobile carts & modern ambient lamps',
   },
   {
-    img: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1400&q=80',
-    title: 'Sports, Martial Arts & Outdoor Gear',
-    sub: 'Crafted for champions — Mizuno, Molten & Kendo equipment',
+    img: '/images/products/grocery/Certified Organic Green Yuzu Kosho Paste.webp',
+    title: 'Authentic Japanese Pantry & Gourmet Delights',
+    sub: 'Organic green yuzu kosho paste, dried hijiki seaweed & artisan delicacies',
   },
 ];

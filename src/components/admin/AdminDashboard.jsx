@@ -480,8 +480,12 @@ export default function AdminDashboard({ open, onClose }) {
                             <Stack direction="row" spacing={1.5} alignItems="center">
                               <Box
                                 component="img"
-                                src={p.image}
+                                src={p.image || '/images/placeholder.svg'}
                                 alt={p.name}
+                                onError={(e) => {
+                                  e.currentTarget.onerror = null;
+                                  e.currentTarget.src = '/images/placeholder.svg';
+                                }}
                                 sx={{ width: 48, height: 48, borderRadius: '8px', objectFit: 'cover', border: '1px solid #FCE4EC' }}
                               />
                               <Box>

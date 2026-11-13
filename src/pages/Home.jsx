@@ -437,8 +437,12 @@ export default function Home() {
                 <CardMedia
                   component="img"
                   height="240"
-                  image={product.image}
+                  image={product.image || '/images/placeholder.svg'}
                   alt={product.name}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = '/images/placeholder.svg';
+                  }}
                   sx={{
                     objectFit: 'cover',
                     transition: 'transform 0.4s',

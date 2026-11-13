@@ -630,8 +630,12 @@ export default function ProductListing() {
                       <CardMedia
                         component="img"
                         height="210"
-                        image={product.image}
+                        image={product.image || '/images/placeholder.svg'}
                         alt={product.name}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = '/images/placeholder.svg';
+                        }}
                         sx={{
                           objectFit: 'cover',
                           transition: 'transform 0.35s ease',

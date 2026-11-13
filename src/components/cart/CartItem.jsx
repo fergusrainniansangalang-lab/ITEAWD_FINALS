@@ -16,7 +16,16 @@ export default function CartItem({ item }) {
 
   return (
     <Stack direction="row" spacing={2} alignItems="center" sx={{ py: 1.5, borderBottom: '1px solid #FCE4EC' }}>
-      <Box component="img" src={item.image} alt={item.name} sx={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 2 }} />
+      <Box
+        component="img"
+        src={item.image || '/images/placeholder.svg'}
+        alt={item.name}
+        onError={(e) => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = '/images/placeholder.svg';
+        }}
+        sx={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 2 }}
+      />
       <Box flex={1}>
         <Typography variant="subtitle2" fontWeight={700}>{item.name}</Typography>
         <Typography variant="caption" color="text.secondary" display="block">

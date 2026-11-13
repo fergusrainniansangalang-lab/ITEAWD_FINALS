@@ -128,8 +128,12 @@ export default function ProductDetails() {
             <Box sx={{ width: { xs: '100%', md: '48%' }, p: { xs: 2.5, md: 3.5 } }}>
               <Box
                 component="img"
-                src={imgs[mainImg] || product.image}
+                src={imgs[mainImg] || product.image || '/images/placeholder.svg'}
                 alt={product.name}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/images/placeholder.svg';
+                }}
                 sx={{
                   width: '100%',
                   height: { xs: 280, sm: 380, md: 440 },
@@ -430,7 +434,17 @@ export default function ProductDetails() {
                     },
                   }}
                 >
-                  <CardMedia component="img" height="180" image={p.image} alt={p.name} sx={{ objectFit: 'cover' }} />
+                  <CardMedia
+                    component="img"
+                    height="180"
+                    image={p.image || '/images/placeholder.svg'}
+                    alt={p.name}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = '/images/placeholder.svg';
+                    }}
+                    sx={{ objectFit: 'cover' }}
+                  />
                   <CardContent sx={{ pb: 1 }}>
                     <Typography variant="subtitle2" fontWeight={800} noWrap>
                       {p.name}

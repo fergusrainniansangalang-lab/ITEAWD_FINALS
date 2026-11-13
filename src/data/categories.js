@@ -16,8 +16,8 @@ export const categories = [
     name: 'Electronics',
     slug: 'electronics',
     description: 'Next-gen smart gadgets, audiovisual devices, and workspace productivity gear.',
-    itemCount: 8,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80',
+    itemCount: 5,
+    image: '/images/products/electronics/Sony WH-1000XM5 Headphones.jpg',
     icon: 'Laptop',
     featured: true
   },
@@ -26,8 +26,8 @@ export const categories = [
     name: 'Shoes',
     slug: 'shoes',
     description: 'High-performance running sneakers, formal leather oxfords, and versatile trail footwear.',
-    itemCount: 8,
-    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80',
+    itemCount: 5,
+    image: '/images/products/shoes/Color Canvas Sneakers.avif',
     icon: 'Footprints',
     featured: true
   },
@@ -36,8 +36,8 @@ export const categories = [
     name: 'Cleaning Supplies',
     slug: 'cleaning-supplies',
     description: 'Eco-conscious household cleaning concentrates, microfiber sets, and sanitizing solutions.',
-    itemCount: 7,
-    image: 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?auto=format&fit=crop&w=600&q=80',
+    itemCount: 5,
+    image: '/images/products/cleaning/Chaise longue.avif',
     icon: 'Sparkles',
     featured: true
   },
@@ -46,8 +46,8 @@ export const categories = [
     name: 'Sports Equipment',
     slug: 'sports-equipment',
     description: 'Professional training weights, yoga gear, hydration packs, and active accessories.',
-    itemCount: 7,
-    image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80',
+    itemCount: 5,
+    image: '/images/products/sports/Molten BG5000 Basketball.jpg',
     icon: 'Trophy',
     featured: true
   },
@@ -56,8 +56,8 @@ export const categories = [
     name: 'Grocery',
     slug: 'grocery',
     description: 'Artisan roast coffee beans, organic olive oils, gourmet pantry staples, and healthy snacks.',
-    itemCount: 7,
-    image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80',
+    itemCount: 5,
+    image: '/images/products/grocery/Certified Organic Green Yuzu Kosho Paste.webp',
     icon: 'Apple',
     featured: true
   },
@@ -66,8 +66,8 @@ export const categories = [
     name: 'Clothing',
     slug: 'clothing',
     description: 'Timeless apparel, premium heavyweight cotton tees, breathable outerwear, and daily essentials.',
-    itemCount: 8,
-    image: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=600&q=80',
+    itemCount: 5,
+    image: '/images/products/clothing/Heavy Weight Sweat Cocoon.avif',
     icon: 'Shirt',
     featured: true
   },
@@ -76,8 +76,8 @@ export const categories = [
     name: 'Books',
     slug: 'books',
     description: 'Bestselling software engineering classics, personal development, business mastery, and design books.',
-    itemCount: 7,
-    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80',
+    itemCount: 5,
+    image: '/images/products/books/The Art of Washoku.jpg',
     icon: 'BookOpen',
     featured: true
   }
