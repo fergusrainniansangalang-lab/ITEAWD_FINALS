@@ -15,7 +15,8 @@ import {
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PaymentIcon from '@mui/icons-material/Payment';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
+import { useAuth } from 'context/AuthContext';
 import { useCart } from 'context/CartContext';
 import paths from 'routes/paths';
 import {
@@ -52,11 +53,16 @@ const INITIAL_PAY = {
 
 export default function Checkout() {
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
   const { cartItems, cartTotal, clearCart } = useCart();
   const [step, setStep] = useState(0);
   const [ship, setShip] = useState(INITIAL_SHIP);
   const [pay, setPay] = useState(INITIAL_PAY);
   const [errors, setErrors] = useState({});
+
+  if (!isLoggedIn) {
+    return <Navigate to={paths.login} replace />;
+  }
 
   const shipping = cartTotal >= FREE_SHIPPING_THRESHOLD ? 0 : FLAT_SHIPPING_FEE;
   const total = cartTotal + shipping;

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * products.js
  * ============================================================
  * Comprehensive Japanese-Themed Product Catalog

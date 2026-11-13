@@ -18,6 +18,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from 'context/CartContext';
+import { useAuth } from 'context/AuthContext';
 import paths from 'routes/paths';
 import {
   FREE_SHIPPING_THRESHOLD,
@@ -30,6 +31,7 @@ import {
 export default function Cart() {
   const navigate = useNavigate();
   const { cartItems, cartTotal, removeFromCart, updateQuantity } = useCart();
+  const { isLoggedIn } = useAuth();
 
   const shipping = cartTotal >= FREE_SHIPPING_THRESHOLD ? 0 : FLAT_SHIPPING_FEE;
   const total = cartTotal + shipping;
@@ -317,14 +319,26 @@ export default function Cart() {
                   </Typography>
                 )}
 
+                {!isLoggedIn && (
+                  <Typography variant="caption" sx={{ color: '#c2185b', fontWeight: 700, mt: 2, display: 'block', textAlign: 'center' }}>
+                    🔒 Please sign in to your account to complete your purchase.
+                  </Typography>
+                )}
+
                 <Button
                   variant="contained"
                   fullWidth
                   size="large"
                   disabled={hasOutOfStockItems}
-                  onClick={() => navigate(paths.checkout)}
+                  onClick={() => {
+                    if (!isLoggedIn) {
+                      navigate(paths.login);
+                    } else {
+                      navigate(paths.checkout);
+                    }
+                  }}
                   sx={{
-                    mt: hasOutOfStockItems ? 1.5 : 3.5,
+                    mt: hasOutOfStockItems || !isLoggedIn ? 1.5 : 3.5,
                     bgcolor: hasOutOfStockItems ? '#e0e0e0' : COLOR_PRIMARY_DARK,
                     '&:hover': { bgcolor: '#c2185b' },
                     borderRadius: '25px',
@@ -335,7 +349,7 @@ export default function Cart() {
                     boxShadow: '0 4px 14px rgba(236, 64, 122, 0.3)',
                   }}
                 >
-                  Proceed to Checkout
+                  {isLoggedIn ? 'Proceed to Checkout' : 'Sign In to Checkout'}
                 </Button>
               </CardContent>
             </Card>
