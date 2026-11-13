@@ -17,7 +17,7 @@ import React, { useState } from 'react';
 import {
   AppBar, Toolbar, Box, Typography, IconButton, InputBase,
   Button, Drawer, List, ListItem, ListItemText, Badge, useMediaQuery,
-  useTheme, Divider, Stack, Container
+  useTheme, Divider, Stack, Container, Tooltip, Avatar
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
@@ -44,6 +44,7 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState('');
   const { cartCount } = useCart();
   const { user, isLoggedIn, logout } = useAuth();
+  const userInitial = (user?.name || user?.email || 'U').trim().charAt(0).toUpperCase();
   const navigate = useNavigate();
 
   const handleSearch = (e) => {
@@ -191,24 +192,37 @@ export default function Navbar() {
               {!isMobile ? (
                 isLoggedIn ? (
                   <Stack direction="row" spacing={1.5} alignItems="center">
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 0.8,
-                        bgcolor: 'rgba(255, 255, 255, 0.22)',
-                        backdropFilter: 'blur(4px)',
-                        px: 1.5,
-                        py: 0.5,
-                        borderRadius: '20px',
-                        border: '1px solid rgba(255, 255, 255, 0.45)',
-                      }}
-                    >
-                      <LocalFloristIcon sx={{ fontSize: 18, color: '#ffffff' }} />
-                      <Typography sx={{ color: '#ffffff', fontWeight: 800, fontSize: '0.86rem' }}>
-                        Kon'nichiwa, {user?.name || 'Customer'}!
-                      </Typography>
-                    </Box>
+                    <Tooltip title={`Signed in as ${user?.name || 'Customer'}`}>
+                      <Box
+                        sx={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 0.8,
+                          bgcolor: 'rgba(255, 255, 255, 0.25)',
+                          backdropFilter: 'blur(4px)',
+                          px: 1.5,
+                          py: 0.45,
+                          borderRadius: '25px',
+                          border: '1.5px solid rgba(255, 255, 255, 0.55)',
+                          height: 36,
+                          cursor: 'default',
+                          userSelect: 'none',
+                        }}
+                      >
+                        <LocalFloristIcon sx={{ fontSize: 16, color: '#ffffff' }} />
+                        <Typography
+                          sx={{
+                            color: '#ffffff',
+                            fontWeight: 900,
+                            fontSize: '0.92rem',
+                            lineHeight: 1,
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {userInitial}
+                        </Typography>
+                      </Box>
+                    </Tooltip>
                     <Typography sx={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.9rem', fontWeight: 300 }}>
                       |
                     </Typography>
